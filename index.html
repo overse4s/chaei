@@ -569,14 +569,20 @@
   }
 
   /* ================ GALLERY ================ */
+  .gallery-section{ margin-top:44px; }
+  .gallery-section:first-child{ margin-top:0; }
+  .gallery-section-label{
+    font-family:inherit; font-weight:600; font-size:11px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--rose-deep); margin-bottom:16px;
+  }
   .gallery-grid{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    grid-auto-rows:150px;
+    grid-auto-rows:230px;
     grid-auto-flow:dense;
     gap:10px;
   }
-  @media (max-width:760px){ .gallery-grid{ grid-template-columns:repeat(2,1fr); grid-auto-rows:130px; gap:8px; } }
+  @media (max-width:760px){ .gallery-grid{ grid-template-columns:repeat(2,1fr); grid-auto-rows:210px; gap:8px; } }
   .ph{
     border-radius:14px;
     position:relative;
@@ -593,7 +599,7 @@
     transition:transform .5s ease;
   }
   .ph-fill img{
-    width:100%; height:100%; object-fit:cover; display:block;
+    width:100%; height:100%; object-fit:cover; object-position:50% 18%; display:block;
     filter:saturate(0.94) contrast(1.02);
   }
   .ph:nth-child(3n) .ph-fill{ background: var(--peony); }
@@ -608,34 +614,76 @@
     padding:4px 8px; border-radius:20px; letter-spacing:.04em;
     z-index:2;
   }
-  /* photo lightbox */
+  /* photo lightbox — swipeable, with visible prev/next affordance */
   .photo-modal{
     position:fixed; inset:0; z-index:500;
-    background:rgba(22,20,18,0.72);
+    background:rgba(22,20,18,0.82);
     display:none; align-items:center; justify-content:center;
-    padding:6vw;
+    padding:0;
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
+    touch-action:pan-y;
   }
   .photo-modal.open{ display:flex; }
   .photo-modal-inner{
-    width:100%; max-width:560px;
-    border-radius:20px;
-    overflow:hidden;
     position:relative;
-    background:#000;
+    max-width:min(92vw, 620px);
+    max-height:82vh;
+    display:flex;
+    user-select:none;
+    -webkit-user-select:none;
   }
-  .photo-modal-inner img{ width:100%; display:block; }
+  .photo-modal-inner img{
+    max-width:100%; max-height:82vh;
+    width:auto; height:auto;
+    display:block; margin:0 auto;
+    border-radius:16px;
+    pointer-events:none;
+  }
   .photo-modal-cap{
     position:absolute; left:14px; bottom:14px;
     font-family:inherit; font-weight:600; font-size:11px; letter-spacing:.04em;
     background:rgba(255,255,255,0.85); color:var(--ink);
     padding:6px 12px; border-radius:20px;
   }
+  .photo-modal-counter{
+    position:absolute; top:18px; left:50%; transform:translateX(-50%);
+    font-family:inherit; font-weight:600; font-size:11px; letter-spacing:.08em;
+    color:rgba(255,255,255,0.75);
+  }
   .photo-modal-close{
     all:unset; cursor:pointer;
-    position:absolute; top:-40px; right:0;
+    position:absolute; top:18px; right:18px;
     color:#fff; font-size:26px; font-weight:300;
+    z-index:2;
+  }
+  .photo-modal-nav{
+    all:unset; cursor:pointer;
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:44px; height:44px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.3);
+    color:#fff; font-size:18px;
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    transition:background .2s ease;
+    z-index:2;
+  }
+  .photo-modal-nav:hover{ background:rgba(255,255,255,0.28); }
+  .photo-modal-prev{ left:-14px; }
+  .photo-modal-next{ right:-14px; }
+  .photo-modal-hint{
+    position:absolute; bottom:-30px; left:50%; transform:translateX(-50%);
+    font-family:inherit; font-weight:600; font-size:10px; letter-spacing:.1em;
+    color:rgba(255,255,255,0.6); white-space:nowrap;
+    display:flex; align-items:center; gap:6px;
+  }
+  .photo-modal-hint .arrow{ display:inline-block; animation:swipehint 1.6s ease-in-out infinite; }
+  @keyframes swipehint{ 0%,100%{transform:translateX(0);} 50%{transform:translateX(4px);} }
+  @media (max-width:640px){
+    .photo-modal-prev{ left:6px; }
+    .photo-modal-next{ right:6px; }
+    .photo-modal-nav{ width:38px; height:38px; }
   }
 
   /* which chaei are you today */
@@ -1034,7 +1082,9 @@
     </div>
   </div>
 
-  <div class="gallery-grid reveal" id="galleryGrid">
+  <div class="gallery-section reveal">
+  <div class="gallery-section-label en">чэи</div>
+  <div class="gallery-grid" id="galleryGrid">
     <div class="ph big" data-cap="студийный кадр"><div class="ph-fill"><img src="assets/chaei/chaei-01.jpg" alt="chaei" loading="lazy"></div></div>
     <div class="ph" data-cap="с косичками"><div class="ph-fill"><img src="assets/chaei/chaei-02.jpg" alt="chaei" loading="lazy"></div></div>
     <div class="ph" data-cap="личный кадр"><div class="ph-fill"><img src="assets/chaei/chaei-03.jpg" alt="chaei" loading="lazy"></div></div>
@@ -1061,6 +1111,23 @@
     <div class="ph" data-cap="фанкам · doosan bears"><div class="ph-fill"><img src="assets/chaei/chaei-25.jpg" alt="chaei" loading="lazy"></div><div class="ph-tag en">fancam</div></div>
     <div class="ph big" data-cap="фанкам"><div class="ph-fill"><img src="assets/chaei/chaei-26.jpg" alt="chaei" loading="lazy"></div><div class="ph-tag en">fancam</div></div>
   </div>
+  </div>
+
+  <div class="gallery-section reveal">
+  <div class="gallery-section-label en">heart of woman</div>
+  <div class="gallery-grid" id="galleryGridGroup">
+    <div class="ph big" data-cap="simply k-pop"><div class="ph-fill"><img src="assets/heart-of-woman/how-01.jpg" alt="heart of woman" loading="lazy"></div><div class="ph-tag en">simply k-pop</div></div>
+    <div class="ph" data-cap="групповое фото"><div class="ph-fill"><img src="assets/heart-of-woman/how-02.jpg" alt="heart of woman" loading="lazy"></div></div>
+    <div class="ph" data-cap="групповое фото"><div class="ph-fill"><img src="assets/heart-of-woman/how-03.jpg" alt="heart of woman" loading="lazy"></div></div>
+    <div class="ph wide" data-cap="групповое фото"><div class="ph-fill"><img src="assets/heart-of-woman/how-04.jpg" alt="heart of woman" loading="lazy"></div></div>
+    <div class="ph big" data-cap="пресс-фото"><div class="ph-fill"><img src="assets/heart-of-woman/how-05.jpg" alt="heart of woman" loading="lazy"></div></div>
+    <div class="ph" data-cap="групповое фото"><div class="ph-fill"><img src="assets/heart-of-woman/how-06.jpg" alt="heart of woman" loading="lazy"></div></div>
+    <div class="ph" data-cap="групповое фото"><div class="ph-fill"><img src="assets/heart-of-woman/how-07.jpg" alt="heart of woman" loading="lazy"></div></div>
+    <div class="ph wide" data-cap="групповое фото"><div class="ph-fill"><img src="assets/heart-of-woman/how-08.jpg" alt="heart of woman" loading="lazy"></div></div>
+    <div class="ph" data-cap="групповое фото"><div class="ph-fill"><img src="assets/heart-of-woman/how-09.jpg" alt="heart of woman" loading="lazy"></div></div>
+    <div class="ph" data-cap="групповое фото"><div class="ph-fill"><img src="assets/heart-of-woman/how-10.jpg" alt="heart of woman" loading="lazy"></div></div>
+  </div>
+  </div>
 
   <div class="roulette">
     <div class="eyebrow">daily mood</div>
@@ -1075,8 +1142,12 @@
 <div class="photo-modal" id="photoModal">
   <div class="photo-modal-inner">
     <button class="photo-modal-close" id="photoModalClose">×</button>
+    <div class="photo-modal-counter" id="photoModalCounter"></div>
+    <button class="photo-modal-nav photo-modal-prev" id="photoModalPrev" aria-label="previous">‹</button>
     <img id="photoModalImg" src="" alt="">
+    <button class="photo-modal-nav photo-modal-next" id="photoModalNext" aria-label="next">›</button>
     <div class="photo-modal-cap en" id="photoModalCap"></div>
+    <div class="photo-modal-hint en"><span class="arrow">←</span>swipe<span class="arrow">→</span></div>
   </div>
 </div>
 
@@ -1433,23 +1504,57 @@
   eraModalClose.addEventListener('click', closeEraModal);
   eraModal.addEventListener('click', (e)=>{ if(e.target === eraModal) closeEraModal(); });
 
-  // gallery lightbox — tap a tile to see the full photo with its caption
+  // gallery lightbox — tap a tile to open it, then swipe or use arrows to browse the rest of that section
   const photoModal = document.getElementById('photoModal');
   const photoModalImg = document.getElementById('photoModalImg');
   const photoModalCap = document.getElementById('photoModalCap');
+  const photoModalCounter = document.getElementById('photoModalCounter');
   const photoModalClose = document.getElementById('photoModalClose');
-  document.querySelectorAll('.ph').forEach(ph=>{
-    ph.addEventListener('click', ()=>{
-      const img = ph.querySelector('img');
-      if(!img) return;
-      photoModalImg.src = img.src;
-      photoModalCap.textContent = ph.dataset.cap || '';
-      photoModal.classList.add('open');
-    });
-  });
+  const photoModalPrev = document.getElementById('photoModalPrev');
+  const photoModalNext = document.getElementById('photoModalNext');
+  let photoSet = [];
+  let photoIndex = 0;
+
+  function showPhoto(i){
+    if(!photoSet.length) return;
+    photoIndex = (i + photoSet.length) % photoSet.length;
+    const ph = photoSet[photoIndex];
+    const img = ph.querySelector('img');
+    photoModalImg.src = img.src;
+    photoModalCap.textContent = ph.dataset.cap || '';
+    photoModalCounter.textContent = (photoIndex + 1) + ' / ' + photoSet.length;
+  }
+  function openPhotoModal(ph){
+    const grid = ph.closest('.gallery-grid');
+    photoSet = grid ? Array.from(grid.querySelectorAll('.ph')) : [ph];
+    showPhoto(photoSet.indexOf(ph));
+    photoModal.classList.add('open');
+  }
   function closePhotoModal(){ photoModal.classList.remove('open'); photoModalImg.src = ''; }
+
+  document.querySelectorAll('.ph').forEach(ph=>{
+    ph.addEventListener('click', ()=> openPhotoModal(ph));
+  });
   photoModalClose.addEventListener('click', closePhotoModal);
+  photoModalPrev.addEventListener('click', ()=> showPhoto(photoIndex - 1));
+  photoModalNext.addEventListener('click', ()=> showPhoto(photoIndex + 1));
   photoModal.addEventListener('click', (e)=>{ if(e.target === photoModal) closePhotoModal(); });
+  document.addEventListener('keydown', (e)=>{
+    if(!photoModal.classList.contains('open')) return;
+    if(e.key === 'Escape') closePhotoModal();
+    if(e.key === 'ArrowLeft') showPhoto(photoIndex - 1);
+    if(e.key === 'ArrowRight') showPhoto(photoIndex + 1);
+  });
+
+  // swipe support for touch devices
+  let touchStartX = null;
+  photoModal.addEventListener('touchstart', (e)=>{ touchStartX = e.changedTouches[0].clientX; }, {passive:true});
+  photoModal.addEventListener('touchend', (e)=>{
+    if(touchStartX === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if(Math.abs(dx) > 40){ showPhoto(photoIndex + (dx < 0 ? 1 : -1)); }
+    touchStartX = null;
+  }, {passive:true});
 
   // "which chaei are you today" — random pull from a small pool of real chaei photos
   const rouletteBtn = document.getElementById('rouletteBtn');
