@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>chaei ⋆ heart of woman</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* base — white/grey only. brown is the single accent, no pink anywhere */
+    --page:#f0efec;
+    --page-2:#e4e2dd;
+    --ink:#161412;
+    --mocha:#8c857e;         /* muted grey for secondary text/labels */
+
+    /* accent family — one soft pink, used sparingly but not shy about it */
+    --blush:#fbe4ea;         /* light pink tint for small fills */
+    --peony:#f4c3d3;         /* deeper pink tint, alt fill */
+    --rose:#e8829f;          /* main pink — the single accent color */
+    --rose-deep:#bd6f89;     /* muted rose — hover / emphasis */
+    --paper:#ffffff;
+    --line:rgba(22,20,18,0.1);
+
+    /* glass */
+    --glass-bg:rgba(255,255,255,0.5);
+    --glass-bg-strong:rgba(255,255,255,0.68);
+    --glass-border:rgba(255,255,255,0.7);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--page);
+    color:var(--ink);
+    font-family:'Plus Jakarta Sans', sans-serif;
+    font-weight:400;
+    overflow-x:hidden;
+    cursor: default;
+    text-transform: lowercase;
+  }
+  ::selection{ background:var(--rose); color:#fff;}
+
+  /* ambient blurred shapes sitting behind glass panels — this is what the
+     glass is actually blurring, otherwise backdrop-filter has nothing to do */
+  .ambient{
+    position:fixed; z-index:0; border-radius:50%;
+    filter:blur(60px); pointer-events:none;
+  }
+  .ambient-1{ top:-10%; right:-8%; width:38vw; height:38vw; background:radial-gradient(circle, rgba(189,111,137,0.26), transparent 70%); }
+  .ambient-2{ bottom:10%; left:-10%; width:34vw; height:34vw; background:radial-gradient(circle, rgba(232,130,159,0.22), transparent 70%); }
+  .ambient-3{ top:45%; right:20%; width:24vw; height:24vw; background:radial-gradient(circle, rgba(255,255,255,0.8), transparent 70%); }
+
+  .glass{
+    background:var(--glass-bg);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+    backdrop-filter: blur(22px) saturate(160%);
+    border:1px solid var(--glass-border);
+    box-shadow:0 8px 32px -12px rgba(22,20,18,0.12);
+  }
+
+  .eyebrow{
+    font-family:inherit; font-weight:500;
+    font-size:11px;
+    letter-spacing:0.16em;
+    text-transform:uppercase !important;
+    color:var(--mocha);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:14px; height:1px;
+    background:var(--mocha);
+    display:inline-block;
+  }
+
+  /* one font family, everywhere — the minimal choice. weight and spacing
+     carry the hierarchy instead of switching typefaces */
+  h1,h2,h3{
+    font-family:'Plus Jakarta Sans', sans-serif;
+    text-transform:none;
+    font-weight:600;
+    letter-spacing:-0.02em;
+  }
+  .en{ text-transform:lowercase; }
+  .script{ font-family:'Plus Jakarta Sans', sans-serif; font-style:normal; font-weight:500; letter-spacing:0.03em; text-transform:none; }
+
+  a{ color:inherit; text-decoration:none; }
+
+  /* film grain overlay */
+  .grain{
+    pointer-events:none;
+    position:fixed; inset:0;
+    z-index:200;
+    opacity:0.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode:multiply;
+  }
+
+  /* progress bar */
+  .progress{
+    position:fixed; top:0; left:0; height:3px;
+    background:var(--rose-deep);
+    z-index:300; width:0%;
+    transition:width .1s linear;
+  }
+
+  /* side nav */
+  .dotnav{
+    position:fixed;
+    right:26px; top:50%; transform:translateY(-50%);
+    z-index:150;
+    display:flex; flex-direction:column; gap:16px;
+  }
+  .dotnav button{
+    all:unset;
+    display:flex; align-items:center; gap:10px;
+    cursor:pointer;
+    justify-content:flex-end;
+  }
+  .dotnav .dot{
+    width:8px; height:8px; border-radius:50%;
+    background:transparent;
+    border:1.4px solid var(--mocha);
+    transition:all .25s ease;
+  }
+  .dotnav button.active .dot{
+    background:var(--rose-deep);
+    border-color:var(--rose-deep);
+    transform:scale(1.3);
+  }
+  .dotnav .lbl{
+    font-family:inherit; font-weight:600;
+    font-size:10px;
+    letter-spacing:0.1em;
+    opacity:0;
+    transform:translateX(6px);
+    transition:all .25s ease;
+    color:var(--mocha);
+    white-space:nowrap;
+  }
+  .dotnav button:hover .lbl{ opacity:1; transform:translateX(0);}
+
+  @media (max-width: 860px){ .dotnav{display:none;} }
+
+  section{ position:relative; z-index:1; }
+  header, nav, footer{ position:relative; z-index:1; }
+  .ambient{ z-index:0; }
+
+  /* reveal */
+  .reveal{
+    opacity:0;
+    transform:translateY(26px);
+    transition:opacity .8s cubic-bezier(.16,.8,.28,1), transform .8s cubic-bezier(.16,.8,.28,1);
+  }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* ================= HERO ================= */
+  .hero{
+    min-height:100svh;
+    display:flex; flex-direction:column;
+    padding:24px 24px 40px;
+    position:relative;
+    background:transparent;
+    overflow:hidden;
+  }
+  .hero-top{
+    display:flex; justify-content:space-between; align-items:center;
+    position:relative; z-index:5;
+  }
+  .brandmark{
+    display:flex; align-items:baseline; gap:8px;
+    font-size:15px; color:var(--ink);
+  }
+  .brandmark .b{ font-weight:600; letter-spacing:0.02em; }
+
+  .menu-btn{
+    all:unset; cursor:pointer;
+    width:44px; height:44px;
+    border-radius:50%;
+    background:var(--glass-bg);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    backdrop-filter: blur(14px) saturate(160%);
+    border:1px solid var(--glass-border);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:5px;
+    position:relative; z-index:20;
+  }
+  .menu-btn span{
+    display:block; height:1.4px; width:16px;
+    background:var(--rose-deep); border-radius:2px;
+  }
+  .menu-btn span:nth-child(2){ width:11px; }
+
+  /* the hero is now one floating glass card — a badge — rather than
+     full-bleed type, sitting on top of the ambient blur shapes */
+  .hero-stage{
+    flex:1;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:22px;
+    padding:6vh 0;
+    position:relative; z-index:5;
+  }
+  .hero-card{
+    width:min(92vw, 780px);
+    border-radius:32px;
+    padding:8px;
+    display:grid;
+    grid-template-columns:220px 1fr;
+    gap:0;
+    overflow:hidden;
+  }
+  @media (max-width:680px){
+    .hero-card{ grid-template-columns:1fr; }
+  }
+  .hero-card-photo{
+    border-radius:26px;
+    background:rgba(255,255,255,0.35);
+    display:flex; align-items:flex-end; justify-content:center;
+    min-height:220px;
+    border:1px solid var(--glass-border);
+    overflow:hidden;
+    position:relative;
+  }
+  .hero-photo-img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+    filter:saturate(0.92) contrast(1.02);
+  }
+  .hero-card-body{
+    padding:34px 34px 30px;
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .hero-name{
+    font-size:clamp(48px, 7vw, 76px);
+    line-height:0.98;
+    color:var(--ink);
+    font-weight:600;
+    letter-spacing:-0.02em;
+    margin-top:10px;
+  }
+  .hero-sub-name{
+    font-size:clamp(15px,1.8vw,18px);
+    color:var(--mocha);
+    margin-top:8px;
+    letter-spacing:0.01em;
+    font-weight:500;
+  }
+  .hero-sub-name .script{ font-size:1.05em; color:var(--rose); font-weight:500; letter-spacing:0.04em; }
+
+  .hero-tagline{
+    max-width:460px;
+    font-size:13.5px;
+    line-height:1.65;
+    color:var(--mocha);
+    margin-top:18px;
+  }
+
+  .scrollcue{
+    font-family:inherit; font-weight:600;
+    font-size:10.5px; letter-spacing:0.14em;
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+    color:var(--mocha);
+  }
+  .scrollcue .line{
+    width:1px; height:34px; background:var(--mocha);
+    position:relative; overflow:hidden;
+  }
+  .scrollcue .line::after{
+    content:""; position:absolute; left:0; top:-100%;
+    width:100%; height:50%; background:var(--ink);
+    animation:drip 1.6s ease-in-out infinite;
+  }
+  @keyframes drip{ 0%{top:-50%;} 100%{top:100%;} }
+
+  /* fullscreen menu overlay */
+  .menu-overlay{
+    position:fixed; inset:0; z-index:400;
+    background:rgba(238,240,238,0.75);
+    -webkit-backdrop-filter: blur(30px) saturate(160%);
+    backdrop-filter: blur(30px) saturate(160%);
+    display:flex; flex-direction:column;
+    align-items:flex-start; justify-content:center;
+    gap:6px; padding:0 10vw;
+    transform:translateY(-100%);
+    transition:transform .5s cubic-bezier(.16,.8,.28,1);
+  }
+  .menu-overlay.open{ transform:translateY(0); }
+  .menu-close{
+    all:unset; cursor:pointer;
+    position:absolute; top:24px; right:28px;
+    font-size:26px; font-weight:300; color:var(--ink); line-height:1;
+  }
+  .menu-link{
+    font-family:'Plus Jakarta Sans', sans-serif; font-weight:600; font-size:clamp(32px,6vw,54px); letter-spacing:-0.02em;
+    color:var(--ink); padding:8px 0;
+    border-bottom:1px solid transparent;
+    transition:color .25s ease, border-color .25s ease;
+  }
+  .menu-link:hover{ color:var(--rose); border-color:var(--rose); }
+
+  /* ================ SECTION SHELL ================ */
+  .shell{ padding:110px 7vw 60px; max-width:1280px; margin:0 auto; }
+  .shell-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    gap:24px; flex-wrap:wrap; margin-bottom:56px;
+  }
+  .shell-title{ font-size:clamp(34px,5vw,58px); }
+  .shell-title sup{
+    font-family:inherit; font-weight:600; font-size:12px;
+    vertical-align:super; color:var(--rose-deep); margin-left:6px;
+  }
+  .shell-note{
+    max-width:280px; font-size:13px; line-height:1.6; color:var(--mocha);
+    text-align:right;
+  }
+  @media (max-width:700px){ .shell{padding:90px 6vw 50px;} .shell-note{text-align:left;} }
+
+  /* ================ STORY / TIMELINE CAROUSEL ================ */
+  .track-wrap{
+    position:relative;
+  }
+  .track{
+    display:flex; gap:20px;
+    overflow-x:auto;
+    scroll-snap-type: x proximity;
+    padding:6px 6px 26px;
+    cursor:grab;
+    scrollbar-width:none;
+  }
+  .track::-webkit-scrollbar{ display:none; }
+  .track.dragging{ cursor:grabbing; scroll-snap-type:none; }
+
+  .era-card{
+    flex:0 0 auto;
+    width:min(78vw, 330px);
+    scroll-snap-align:start;
+    background:var(--glass-bg-strong);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(18px) saturate(160%);
+    border:1px solid var(--glass-border);
+    border-radius:22px;
+    padding:26px 24px 24px;
+    display:flex; flex-direction:column; gap:14px;
+    position:relative;
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .era-card:hover{ transform:translateY(-4px); box-shadow:0 16px 30px -20px rgba(44,40,37,0.18); }
+  .era-num{
+    font-family:inherit; font-weight:600; font-size:11px;
+    color:var(--rose-deep); letter-spacing:0.08em;
+    display:flex; justify-content:space-between;
+  }
+  .era-title{ font-family:'Plus Jakarta Sans', sans-serif; font-weight:600; font-size:19px; letter-spacing:-0.01em; }
+  .era-date{
+    font-family:inherit; font-weight:600; font-size:10.5px;
+    color:var(--mocha); text-transform:uppercase;
+    background:var(--blush); display:inline-block;
+    padding:4px 9px; border-radius:20px; width:fit-content;
+  }
+  .era-text{ font-size:13.4px; line-height:1.65; color:var(--ink); }
+  .era-text b{ color:var(--rose-deep); font-weight:700; }
+  .era-missions{ display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; padding-top:6px;}
+  .mission-tag{
+    font-family:inherit; font-weight:600; font-size:9.6px;
+    text-transform:none;
+    border:1px solid var(--line);
+    padding:4px 8px; border-radius:20px;
+    color:var(--mocha);
+  }
+
+  .track-scrub{
+    height:2px; background:var(--line); border-radius:2px; margin-top:6px;
+    position:relative; overflow:hidden;
+  }
+  .track-scrub-fill{
+    position:absolute; left:0; top:0; height:100%;
+    background:var(--rose-deep); width:16%;
+    transition:width .1s linear;
+  }
+  .era-card{ cursor:pointer; }
+  .era-footer{ margin-top:auto; padding-top:6px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+  .era-footer .era-missions{ margin-top:0; padding-top:0; }
+  .era-more{
+    font-family:inherit; font-weight:600; font-size:10.5px; letter-spacing:.05em;
+    color:var(--rose-deep); white-space:nowrap; display:flex; align-items:center; gap:5px;
+  }
+  .era-more .arrow{ display:inline-block; transition:transform .2s ease; }
+  .era-card:hover .era-more .arrow{ transform:translateX(3px); }
+
+  /* era detail modal — full story for one period, opened by tapping a card */
+  .era-modal{
+    position:fixed; inset:0; z-index:500;
+    background:rgba(22,20,18,0.55);
+    display:none; align-items:center; justify-content:center;
+    padding:6vw;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+  .era-modal.open{ display:flex; }
+  .era-modal-inner{
+    width:100%; max-width:640px; max-height:82vh;
+    overflow-y:auto;
+    border-radius:24px;
+    padding:40px 34px 34px;
+    position:relative;
+    background:var(--paper);
+    border:1px solid var(--glass-border);
+    box-shadow:0 30px 70px -24px rgba(22,20,18,0.4);
+  }
+  .era-modal-close{
+    all:unset; cursor:pointer;
+    position:absolute; top:20px; right:22px;
+    font-size:24px; font-weight:300; color:var(--mocha); line-height:1;
+  }
+  .era-modal-date{
+    font-family:inherit; font-weight:600; font-size:10.5px;
+    color:var(--mocha); text-transform:uppercase;
+    background:var(--blush); display:inline-block;
+    padding:4px 9px; border-radius:20px; width:fit-content;
+  }
+  .era-modal-title{ font-family:'Plus Jakarta Sans', sans-serif; font-weight:600; font-size:26px; letter-spacing:-0.01em; margin-top:14px; }
+  .era-modal-text{ font-size:14px; line-height:1.8; color:var(--ink); margin-top:16px; white-space:pre-line; }
+  .era-modal-missions{ display:flex; flex-wrap:wrap; gap:6px; margin-top:20px; }
+  @media (max-width:540px){ .era-modal-inner{ padding:32px 22px 26px; } .era-modal-title{ font-size:21px; } }
+
+  /* facts ticker */
+
+  /* ================ GROUP SECTION ================ */
+  .group-shell{
+    background:var(--glass-bg);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
+    backdrop-filter: blur(28px) saturate(160%);
+    color:var(--ink);
+    border-top:1px solid var(--glass-border);
+    border-bottom:1px solid var(--glass-border);
+  }
+  .group-shell .eyebrow{ color:var(--mocha); }
+  .group-shell .eyebrow::before{ background:var(--mocha); }
+  .group-shell .shell-note{ color:var(--mocha); }
+
+  .philosophy{
+    font-family:'Plus Jakarta Sans', sans-serif; font-style:normal; font-weight:500;
+    font-size:clamp(19px,2.4vw,27px);
+    line-height:1.55; max-width:760px;
+    color:var(--ink); margin-bottom:64px;
+    position:relative; padding-left:24px;
+    border-left:1px solid var(--rose-deep);
+    letter-spacing:-0.01em;
+  }
+
+  /* compact tap-through member row + single detail panel below, instead of
+     five tall cards you had to scroll past one by one */
+  .members-row{
+    display:flex; gap:8px;
+    overflow-x:auto;
+    padding:4px 4px 8px;
+    scrollbar-width:none;
+  }
+  .members-row::-webkit-scrollbar{ display:none; }
+  .member-tile{
+    all:unset; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    flex:0 0 auto; width:72px;
+    padding:12px 6px;
+    border-radius:18px;
+    border:1px solid transparent;
+    transition:all .25s ease;
+  }
+  .member-tile:hover{ background:rgba(255,255,255,0.35); }
+  .member-tile.active{
+    background:rgba(255,255,255,0.5);
+    border-color:var(--glass-border);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+  .member-tile-avatar{
+    width:52px; height:52px; border-radius:50%;
+    background:rgba(22,20,18,0.06);
+    background-size:cover; background-position:center 18%;
+    border:1.5px solid transparent;
+    transition:border-color .25s ease;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Plus Jakarta Sans', sans-serif; font-weight:700; font-size:16px; color:var(--rose-deep);
+  }
+  .member-tile.active .member-tile-avatar{ border-color:var(--rose-deep); }
+  .member-tile-name{
+    font-family:inherit; font-weight:600; font-size:11px;
+    color:var(--mocha); transition:color .25s ease;
+  }
+  .member-tile.active .member-tile-name{ color:var(--ink); }
+
+  .member-detail{
+    margin-top:18px;
+    padding:24px;
+    border-radius:22px;
+    display:flex; gap:18px; align-items:flex-start;
+  }
+  .member-detail-avatar{
+    width:64px; height:64px; border-radius:50%;
+    background:rgba(22,20,18,0.06);
+    background-size:cover; background-position:center 18%;
+    border:1px solid var(--glass-border);
+    flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Plus Jakarta Sans', sans-serif; font-weight:700; font-size:20px; color:var(--rose-deep);
+  }
+  .member-detail-name{ font-family:'Plus Jakarta Sans', sans-serif; font-weight:600; font-size:19px; }
+  .member-detail-role{
+    font-family:inherit; font-weight:500; font-size:10px; letter-spacing:0.06em;
+    text-transform:uppercase; color:var(--rose-deep); margin-top:4px;
+  }
+  .member-detail-bio{
+    font-family:inherit; font-size:13px; line-height:1.6;
+    color:var(--mocha); margin-top:10px; max-width:480px;
+  }
+  @media (max-width:540px){
+    .member-detail{ flex-direction:column; }
+  }
+
+  .debutinfo{
+    margin-top:70px;
+    display:grid; grid-template-columns:1.1fr 1fr; gap:50px;
+    align-items:start;
+  }
+  @media (max-width:820px){ .debutinfo{ grid-template-columns:1fr; } }
+  .debutinfo .cover{
+    aspect-ratio:1/1; border-radius:20px;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(189,111,137,0.24), transparent 65%),
+      rgba(255,255,255,0.4);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    backdrop-filter: blur(16px) saturate(160%);
+    border:1px solid var(--glass-border);
+    position:relative;
+    display:flex; align-items:flex-end; padding:20px;
+  }
+  .cover .en{ font-family:'Plus Jakarta Sans', sans-serif; font-weight:600; font-size:22px; color:var(--ink); }
+  .stat-list{ display:flex; flex-direction:column; gap:0; }
+  .stat-row{
+    display:flex; justify-content:space-between; gap:20px;
+    padding:14px 0; border-bottom:1px solid rgba(44,40,37,0.1);
+    font-size:13.5px;
+  }
+  .stat-row .k{ font-family:inherit; font-weight:500; font-size:10.5px; color:var(--mocha); letter-spacing:.05em;}
+  .stat-row .v{ text-align:right; max-width:60%; line-height:1.5; color:var(--ink); }
+
+  /* personal facts sticky note grid */
+  .facts-grid{
+    margin-top:70px;
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:14px;
+  }
+  .fact-note{
+    background:rgba(255,255,255,0.45); color:var(--ink);
+    border:1px solid var(--glass-border);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    backdrop-filter: blur(14px) saturate(160%);
+    border-radius:14px;
+    padding:16px 16px 14px;
+    font-size:12.6px; line-height:1.55;
+    position:relative;
+  }
+  .fact-note .k{
+    font-family:inherit; font-weight:600; font-size:9.5px;
+    color:var(--rose-deep); display:block; margin-bottom:6px; letter-spacing:.06em;
+  }
+
+  /* ================ GALLERY ================ */
+  .gallery-section{ margin-top:44px; }
+  .gallery-section:first-child{ margin-top:0; }
+  .gallery-section-label{
+    font-family:inherit; font-weight:600; font-size:11px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--rose-deep); margin-bottom:16px;
+  }
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    grid-auto-rows:230px;
+    grid-auto-flow:dense;
+    gap:10px;
+  }
+  @media (max-width:760px){ .gallery-grid{ grid-template-columns:repeat(2,1fr); grid-auto-rows:210px; gap:8px; } }
+  .ph{
+    border-radius:14px;
+    position:relative;
+    overflow:hidden;
+    cursor:pointer;
+    border:1px solid var(--line);
+  }
+  .ph.big{ grid-column:span 2; grid-row:span 2; }
+  .ph.wide{ grid-column:span 2; }
+  @media (max-width:760px){ .ph.big{ grid-column:span 2; grid-row:span 2; } .ph.wide{ grid-column:span 2; } }
+  .ph-fill{
+    position:absolute; inset:0;
+    background: var(--blush);
+    transition:transform .5s ease;
+  }
+  .ph-fill img{
+    width:100%; height:100%; object-fit:cover; object-position:50% 18%; display:block;
+    filter:saturate(0.94) contrast(1.02);
+  }
+  .ph:nth-child(3n) .ph-fill{ background: var(--peony); }
+  .ph:nth-child(4n) .ph-fill{ background: var(--rose); }
+  .ph:hover .ph-fill{ transform:scale(1.08); }
+  .ph-tag{
+    position:absolute; left:10px; bottom:10px;
+    font-family:inherit; font-weight:600; font-size:9.5px;
+    background:rgba(255,255,255,0.75); color:var(--ink);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    padding:4px 8px; border-radius:20px; letter-spacing:.04em;
+    z-index:2;
+  }
+  /* photo lightbox — swipeable, with visible prev/next affordance */
+  .photo-modal{
+    position:fixed; inset:0; z-index:500;
+    background:rgba(22,20,18,0.82);
+    display:none; align-items:center; justify-content:center;
+    padding:0;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    touch-action:pan-y;
+  }
+  .photo-modal.open{ display:flex; }
+  .photo-modal-inner{
+    position:relative;
+    max-width:min(92vw, 620px);
+    max-height:82vh;
+    display:flex;
+    user-select:none;
+    -webkit-user-select:none;
+  }
+  .photo-modal-inner img{
+    max-width:100%; max-height:82vh;
+    width:auto; height:auto;
+    display:block; margin:0 auto;
+    border-radius:16px;
+    pointer-events:none;
+  }
+  .photo-modal-cap{
+    position:absolute; left:14px; bottom:14px;
+    font-family:inherit; font-weight:600; font-size:11px; letter-spacing:.04em;
+    background:rgba(255,255,255,0.85); color:var(--ink);
+    padding:6px 12px; border-radius:20px;
+  }
+  .photo-modal-counter{
+    position:absolute; top:18px; left:50%; transform:translateX(-50%);
+    font-family:inherit; font-weight:600; font-size:11px; letter-spacing:.08em;
+    color:rgba(255,255,255,0.75);
+  }
+  .photo-modal-close{
+    all:unset; cursor:pointer;
+    position:absolute; top:18px; right:18px;
+    color:#fff; font-size:26px; font-weight:300;
+    z-index:2;
+  }
+  .photo-modal-nav{
+    all:unset; cursor:pointer;
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:44px; height:44px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.3);
+    color:#fff; font-size:18px;
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    transition:background .2s ease;
+    z-index:2;
+  }
+  .photo-modal-nav:hover{ background:rgba(255,255,255,0.28); }
+  .photo-modal-prev{ left:-14px; }
+  .photo-modal-next{ right:-14px; }
+  .photo-modal-hint{
+    position:absolute; bottom:-30px; left:50%; transform:translateX(-50%);
+    font-family:inherit; font-weight:600; font-size:10px; letter-spacing:.1em;
+    color:rgba(255,255,255,0.6); white-space:nowrap;
+    display:flex; align-items:center; gap:6px;
+  }
+  .photo-modal-hint .arrow{ display:inline-block; animation:swipehint 1.6s ease-in-out infinite; }
+  @keyframes swipehint{ 0%,100%{transform:translateX(0);} 50%{transform:translateX(4px);} }
+  @media (max-width:640px){
+    .photo-modal-prev{ left:6px; }
+    .photo-modal-next{ right:6px; }
+    .photo-modal-nav{ width:38px; height:38px; }
+  }
+
+  /* which chaei are you today */
+  .roulette{
+    margin-top:60px;
+    display:flex; flex-direction:column; align-items:center; text-align:center;
+    gap:22px;
+  }
+  .roulette-btn{
+    all:unset; cursor:pointer;
+    font-family:inherit; font-weight:600; font-size:13px; letter-spacing:.02em;
+    color:#fff; background:var(--rose-deep);
+    padding:16px 30px; border-radius:40px;
+    transition:all .25s ease;
+    box-shadow:0 14px 30px -14px rgba(189,111,137,0.5);
+  }
+  .roulette-btn:hover{ background:var(--rose); transform:translateY(-2px); }
+  .roulette-card{
+    width:min(88vw, 300px);
+    border-radius:22px;
+    overflow:hidden;
+    position:relative;
+    opacity:0; transform:scale(0.94) translateY(10px);
+    transition:opacity .4s ease, transform .4s ease;
+    border:1px solid var(--glass-border);
+    box-shadow:0 20px 40px -18px rgba(22,20,18,0.3);
+  }
+  .roulette-card.show{ opacity:1; transform:scale(1) translateY(0); }
+  .roulette-card img{ width:100%; aspect-ratio:1/1; object-fit:cover; display:block; }
+  .roulette-card-cap{
+    padding:14px 16px;
+    background:var(--paper);
+    font-size:12.5px; color:var(--mocha); font-weight:500;
+  }
+  .roulette-card-cap b{ color:var(--rose-deep); font-weight:700; display:block; font-size:14px; margin-bottom:2px; }
+
+  /* ================ VIDEOS ================ */
+  .vid-tabs{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:30px; }
+  .vid-tab{
+    all:unset; cursor:pointer;
+    font-family:inherit; font-weight:600; font-size:11px; letter-spacing:.04em;
+    color:var(--mocha);
+    border:1px solid var(--line);
+    padding:8px 14px; border-radius:20px;
+    transition:all .2s ease;
+  }
+  .vid-tab:hover{ border-color:var(--rose-deep); color:var(--rose-deep); }
+  .vid-tab.active{ background:var(--rose-deep); border-color:var(--rose-deep); color:#fff; }
+  .vid-row.hidden{ display:none; }
+  .vid-list{ display:flex; flex-direction:column; }
+  .vid-row{
+    display:grid; grid-template-columns:48px 1fr auto;
+    align-items:center; gap:18px;
+    padding:18px 6px;
+    border-top:1px solid var(--line);
+    transition:background .25s ease;
+    cursor:pointer;
+  }
+  .vid-row:last-child{ border-bottom:1px solid var(--line); }
+  .vid-row:hover{ background:rgba(255,255,255,0.5); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-radius:16px; }
+  .vid-play{
+    width:36px; height:36px; border-radius:50%;
+    border:1px solid var(--mocha);
+    display:flex; align-items:center; justify-content:center;
+    font-size:10px; color:var(--mocha);
+    transition:all .25s ease;
+    flex-shrink:0;
+  }
+  .vid-row:hover .vid-play{ background:var(--rose-deep); border-color:var(--rose-deep); color:#fff; }
+  .vid-title{ font-size:14.5px; }
+  .vid-title .sub{
+    display:block; font-family:inherit; font-weight:500; font-size:10px;
+    text-transform:uppercase; color:var(--mocha); margin-top:4px; letter-spacing:.04em;
+  }
+
+  /* inline video lightbox — plays right on the site instead of just linking out */
+  .vid-modal{
+    position:fixed; inset:0; z-index:500;
+    background:rgba(22,20,18,0.7);
+    display:none; align-items:center; justify-content:center;
+    padding:6vw;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+  .vid-modal.open{ display:flex; }
+  .vid-modal-inner{
+    width:100%; max-width:820px;
+    aspect-ratio:16/9;
+    border-radius:18px;
+    overflow:hidden;
+    position:relative;
+    background:#000;
+  }
+  .vid-modal-inner iframe{ width:100%; height:100%; border:0; display:block; }
+  .vid-modal-close{
+    all:unset; cursor:pointer;
+    position:absolute; top:-44px; right:0;
+    color:#fff; font-size:26px; font-weight:300;
+  }
+  @media (max-width:640px){
+    .vid-row{ grid-template-columns:36px 1fr auto; }
+  }
+
+
+  /* footer */
+  footer{
+    padding:70px 7vw 40px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    flex-wrap:wrap; gap:20px;
+    border-top:1px solid var(--line);
+    background:var(--page);
+  }
+  .foot-mark{ font-family:'Plus Jakarta Sans', sans-serif; font-weight:600; font-size:17px; }
+  .foot-note{ font-family:inherit; font-weight:500; font-size:10.5px; color:var(--mocha); letter-spacing:.04em; }
+</style>
+</head>
+<body>
+
+<div class="ambient ambient-1"></div>
+<div class="ambient ambient-2"></div>
+<div class="ambient ambient-3"></div>
+<div class="grain"></div>
+<div class="progress" id="progress"></div>
+
+<nav class="dotnav" id="dotnav">
+  <button data-target="#hero" class="active"><span class="lbl">main</span><span class="dot"></span></button>
+  <button data-target="#story"><span class="lbl">the story</span><span class="dot"></span></button>
+  <button data-target="#group"><span class="lbl">heart of woman</span><span class="dot"></span></button>
+  <button data-target="#gallery"><span class="lbl">photo archive</span><span class="dot"></span></button>
+  <button data-target="#videos"><span class="lbl">video archive</span><span class="dot"></span></button>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="hero">
+  <div class="hero-top">
+    <div class="brandmark"><span class="en">채이</span> <span class="en b">chaei</span></div>
+    <button class="menu-btn" id="menuBtn" aria-label="menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="hero-stage">
+    <div class="hero-card glass">
+      <div class="hero-card-photo">
+        <img src="assets/chaei/chaei-11.jpg" alt="chaei" class="hero-photo-img" id="heroPhoto" loading="eager">
+      </div>
+      <div class="hero-card-body">
+        <div class="eyebrow">heart of woman · рэпер, саб-вокалистка</div>
+        <h1 class="hero-name">чэи</h1>
+        <p class="hero-sub-name">윤수인 — <span class="script">Yoon Sooin</span></p>
+        <p class="hero-tagline">рэпер и саб-вокалистка heart of woman, дебютировавшей под blue brown records 28 мая 2026 года. до дебюта она была известна как юн суин и успела пройти через два шоу на выживание подряд — universe ticket и unpretty rapstar : hip pop princess. оба раза выбыла до финала, но каждый раз возвращалась к тренировкам и пробовала снова</p>
+      </div>
+    </div>
+    <div class="scrollcue"><span class="line"></span>scroll</div>
+  </div>
+</section>
+
+<nav class="menu-overlay" id="menuOverlay">
+  <button class="menu-close" id="menuClose" aria-label="close">×</button>
+  <a href="#hero" class="menu-link en">main</a>
+  <a href="#story" class="menu-link en">the story</a>
+  <a href="#group" class="menu-link en">heart of woman</a>
+  <a href="#gallery" class="menu-link en">photo archive</a>
+  <a href="#videos" class="menu-link en">video archive</a>
+</nav>
+
+<!-- ================= STORY ================= -->
+<section class="shell" id="story">
+  <div class="shell-head reveal">
+    <div>
+      <div class="eyebrow">chronology · 2005 — 2026</div>
+      <h2 class="shell-title en">the story <sup>01</sup></h2>
+    </div>
+  </div>
+
+  <div class="track-wrap reveal">
+    <div class="track" id="track">
+
+      <div class="era-card" data-era="1">
+        <div class="era-num"><span>01 / 12</span><span>trainee</span></div>
+        <div class="era-date">до 2023</div>
+        <div class="era-title en">jellyfish entertainment</div>
+        <p class="era-text">первое агентство. осталось в официальной биографии, хотя отдельно почти нигде не разбирается</p>
+        <div class="era-footer">
+          <span class="era-more en">полная история<span class="arrow">→</span></span>
+        </div>
+      </div>
+
+      <div class="era-card" data-era="2">
+        <div class="era-num"><span>02 / 12</span><span>trainee</span></div>
+        <div class="era-date">2023 — 2025</div>
+        <div class="era-title en">starting house</div>
+        <p class="era-text">маленькое агентство лим ёнуна. здесь суин тренировалась в составе starting house mate вместе с <b>ким суджин</b> и <b>юн чэын</b> — с ними она пересечётся ещё не раз</p>
+        <div class="era-footer">
+          <span class="era-more en">полная история<span class="arrow">→</span></span>
+        </div>
+      </div>
+
+      <div class="era-card" data-era="3">
+        <div class="era-num"><span>03 / 12</span><span>survival · sbs</span></div>
+        <div class="era-date">18 июля 2023</div>
+        <div class="era-title en">universe ticket</div>
+        <p class="era-text">18 лет, прозвище <b>ванеллопи</b> и привычка перезавязывать шнурки перед каждым выходом на сцену</p>
+        <div class="era-footer">
+          <div class="era-missions">
+            <span class="mission-tag en">moving profile</span>
+            <span class="mission-tag en">my universe</span>
+          </div>
+          <span class="era-more en">полная история<span class="arrow">→</span></span>
+        </div>
+      </div>
+
+      <div class="era-card" data-era="4">
+        <div class="era-num"><span>04 / 12</span><span>elimination</span></div>
+        <div class="era-date">ноябрь — декабрь 2023</div>
+        <div class="era-title en">rise & elimination</div>
+        <p class="era-text">с 45 на <b>34 место</b> за один эпизод — и всё равно выбыла в первой волне отсева</p>
+        <div class="era-footer">
+          <div class="era-missions">
+            <span class="mission-tag en">revenge battle</span>
+            <span class="mission-tag en">청순 위너스</span>
+          </div>
+          <span class="era-more en">полная история<span class="arrow">→</span></span>
+        </div>
+      </div>
+
+      <div class="era-card" data-era="5">
+        <div class="era-num"><span>05 / 12</span><span>trainee</span></div>
+        <div class="era-date">2024 — 2025</div>
+        <div class="era-title en">между шоу</div>
+        <p class="era-text">почти два года трейни между двумя выживаловками — рядом с <b>ким суджин</b>, которая на universe ticket дошла до полуфинала</p>
+        <div class="era-footer">
+          <span class="era-more en">полная история<span class="arrow">→</span></span>
+        </div>
+      </div>
+
+      <div class="era-card" data-era="6">
+        <div class="era-num"><span>06 / 12</span><span>survival · mnet</span></div>
+        <div class="era-date">сентябрь — октябрь 2025</div>
+        <div class="era-title en">hip pop princess</div>
+        <p class="era-text">кореяно-японский проект на 40 участниц. суин анонсировали в начале сентября, рост и mbti впервые прозвучали официально</p>
+        <div class="era-footer">
+          <div class="era-missions">
+            <span class="mission-tag en">self-styling</span>
+            <span class="mission-tag en">group cypher</span>
+          </div>
+          <span class="era-more en">полная история<span class="arrow">→</span></span>
+        </div>
+      </div>
+
+      <div class="era-card" data-era="7">
+        <div class="era-num"><span>07 / 12</span><span>missions</span></div>
+        <div class="era-date">октябрь — ноябрь 2025</div>
+        <div class="era-title en">bad news, crown</div>
+        <p class="era-text">соло-кавер на bad news kiss of life, потом crown в команде a — и выживание в батле на номер с нуля</p>
+        <div class="era-footer">
+          <div class="era-missions">
+            <span class="mission-tag en">bad news</span>
+            <span class="mission-tag en">crown</span>
+          </div>
+          <span class="era-more en">полная история<span class="arrow">→</span></span>
+        </div>
+      </div>
+
+      <div class="era-card" data-era="8">
+        <div class="era-num"><span>08 / 12</span><span>the moment</span></div>
+        <div class="era-date">декабрь 2025</div>
+        <div class="era-title en">the magic girl scene</div>
+        <p class="era-text">команда выбрала образ девочки-волшебницы, миссию проиграла — и стала самой обсуждаемой сценой всего шоу</p>
+        <div class="era-footer">
+          <span class="era-more en">полная история<span class="arrow">→</span></span>
+        </div>
+      </div>
+
+      <div class="era-card" data-era="9">
+        <div class="era-num"><span>09 / 12</span><span>elimination</span></div>
+        <div class="era-date">декабрь 2025</div>
+        <div class="era-title en">выбыла</div>
+        <p class="era-text">третья волна отсева, 22 место из сорока. финальный состав h//pe princess объявили уже без неё</p>
+        <div class="era-footer">
+          <span class="era-more en">полная история<span class="arrow">→</span></span>
+        </div>
+      </div>
+
+      <div class="era-card" data-era="10">
+        <div class="era-num"><span>10 / 12</span><span>signing</span></div>
+        <div class="era-date">30 января 2026</div>
+        <div class="era-title en">blue brown records</div>
+        <p class="era-text">новый лейбл хвисона и мён сану — бренд-директора ateez, enhypen и illit. вместе с суин объявили и <b>чхве джихён</b></p>
+        <div class="era-footer">
+          <span class="era-more en">полная история<span class="arrow">→</span></span>
+        </div>
+      </div>
+
+      <div class="era-card" data-era="11">
+        <div class="era-num"><span>11 / 12</span><span>reality show</span></div>
+        <div class="era-date">24 марта — 14 апреля 2026</div>
+        <div class="era-title en">teach me how</div>
+        <p class="era-text">реалити о формировании состава. хореограф раскритиковал технику суин — а 14 апреля объявили её сценическое имя</p>
+        <div class="era-footer">
+          <span class="era-more en">полная история<span class="arrow">→</span></span>
+        </div>
+      </div>
+
+      <div class="era-card" data-era="12">
+        <div class="era-num"><span>12 / 12</span><span>debut</span></div>
+        <div class="era-date">28 мая 2026</div>
+        <div class="era-title en">heart of woman</div>
+        <p class="era-text">дебют сразу с полноформатным альбомом, живой вокал без исключений и y2k-эстетика кассетных плееров</p>
+        <div class="era-footer">
+          <span class="era-more en">полная история<span class="arrow">→</span></span>
+        </div>
+      </div>
+
+    </div>
+    <div class="track-scrub"><div class="track-scrub-fill" id="scrubFill"></div></div>
+  </div>
+</section>
+
+<!-- ================= GROUP ================= -->
+<section class="shell group-shell" id="group">
+  <div class="shell-head reveal">
+    <div>
+      <div class="eyebrow">five hearts, one rhythm</div>
+      <h2 class="shell-title en">heart of woman <sup>02</sup></h2>
+    </div>
+    <p class="shell-note">дебютировали под blue brown records 28 мая 2026 года</p>
+  </div>
+
+  <p class="philosophy reveal">«пять сердец, у каждого своя история и своя энергия, объединяются в один мощный ритм, который трогает сердца слушателей» — сокращение h.o.w отражает философию группы: не следовать прописанному пути, а постоянно спрашивать себя, как двигаться дальше</p>
+
+  <div class="members-row reveal" id="membersRow">
+    <button class="member-tile active" data-member="jihyun">
+      <div class="member-tile-avatar" style="background-image:url('https://i.ytimg.com/vi/RJCxt4qgTA0/hqdefault.jpg')"></div>
+      <div class="member-tile-name en">jihyun</div>
+    </button>
+    <button class="member-tile" data-member="ayne">
+      <div class="member-tile-avatar">A</div>
+      <div class="member-tile-name en">ayne</div>
+    </button>
+    <button class="member-tile" data-member="liri">
+      <div class="member-tile-avatar" style="background-image:url('https://i.ytimg.com/vi/PyzWiIx4cAg/hqdefault.jpg')"></div>
+      <div class="member-tile-name en">liri</div>
+    </button>
+    <button class="member-tile" data-member="liuyin">
+      <div class="member-tile-avatar" style="background-image:url('https://i.ytimg.com/vi/slDahsuMiEo/hqdefault.jpg')"></div>
+      <div class="member-tile-name en">liuyin</div>
+    </button>
+    <button class="member-tile" data-member="chaei">
+      <div class="member-tile-avatar" style="background-image:url('https://i.ytimg.com/vi/r0FGT7ts05U/hqdefault.jpg')"></div>
+      <div class="member-tile-name en">chaei</div>
+    </button>
+  </div>
+
+  <div class="member-detail glass" id="memberDetail">
+    <div class="member-detail-avatar" id="mdAvatar" style="background-image:url('https://i.ytimg.com/vi/RJCxt4qgTA0/hqdefault.jpg')"></div>
+    <div class="member-detail-text">
+      <div class="member-detail-name en" id="mdName">jihyun</div>
+      <div class="member-detail-role" id="mdRole">лидер · мейн-дэнсер · саб-вокалистка</div>
+      <div class="member-detail-bio" id="mdBio">настоящее имя — чхве джихён (최지현), 8 ноября 2004. успела побывать в двух составах, которые так и не дебютировали — howz и 4iren (4iren должны были дебютировать в начале 2025-го, но группу расформировали ещё до дебюта), а до этого прошла r u next? от hybe и выбыла на 9 эпизоде с 12 местом. в blue brown records пришла в январе 2026 вместе с суин — раньше остальных участниц — и на реалити teach me how тренировала их как капитан команды.</div>
+    </div>
+  </div>
+
+  <div class="debutinfo">
+    <div class="cover reveal">
+      <span class="en">heart byte : legacy</span>
+    </div>
+    <div class="stat-list reveal">
+      <div class="stat-row"><span class="k">дебют</span><span class="v">28 мая 2026, 18:00 kst</span></div>
+      <div class="stat-row"><span class="k">титул</span><span class="v">나를 잃지 않는 방법 (lost in proof)</span></div>
+      <div class="stat-row"><span class="k">формат</span><span class="v">полноформатный альбом</span></div>
+      <div class="stat-row"><span class="k">сцены</span><span class="v">m countdown, music bank, show! music core, it's live</span></div>
+      <div class="stat-row"><span class="k">рейтинг</span><span class="v">29 место среди гёрл-групп, июнь 2026</span></div>
+    </div>
+  </div>
+
+  <div class="facts-grid reveal">
+    <div class="fact-note"><span class="k">birthday</span>21 июля 2005 · рак · петух</div>
+    <div class="fact-note"><span class="k">mbti</span>entj</div>
+    <div class="fact-note"><span class="k">height</span>164 см</div>
+    <div class="fact-note"><span class="k">nickname</span>ванеллопи → бабо суин</div>
+    <div class="fact-note"><span class="k">favorite color</span>розовый</div>
+    <div class="fact-note"><span class="k">in her bag</span>блеск для губ, крем для рук, парфюм, дневник</div>
+    <div class="fact-note"><span class="k">hobbies</span>фильмы, шопинг, своя хореография</div>
+    <div class="fact-note"><span class="k">closest friends</span>ким суджин, юн чэын, сакамото шихона</div>
+    <div class="fact-note"><span class="k">любопытный факт</span>единственная кореянка в h.o.w., чьё образование до сих пор нигде не указано публично</div>
+  </div>
+</section>
+
+<!-- ================= GALLERY ================= -->
+<section class="shell" id="gallery">
+  <div class="shell-head reveal">
+    <div>
+      <div class="eyebrow">visual archive</div>
+      <h2 class="shell-title en">photo archive <sup>03</sup></h2>
+    </div>
+  </div>
+
+  <div class="gallery-section reveal">
+  <div class="gallery-section-label en">чэи</div>
+  <div class="gallery-grid" id="galleryGrid">
+    <div class="ph big" data-cap="студийный кадр"><div class="ph-fill"><img src="assets/chaei/chaei-01.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph" data-cap="с косичками"><div class="ph-fill"><img src="assets/chaei/chaei-02.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph" data-cap="личный кадр"><div class="ph-fill"><img src="assets/chaei/chaei-03.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph wide" data-cap="school look"><div class="ph-fill"><img src="assets/chaei/chaei-04.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph" data-cap="личный кадр"><div class="ph-fill"><img src="assets/chaei/chaei-05.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph" data-cap="личный кадр"><div class="ph-fill"><img src="assets/chaei/chaei-06.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph big" data-cap="личный кадр"><div class="ph-fill"><img src="assets/chaei/chaei-07.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph" data-cap="личный кадр"><div class="ph-fill"><img src="assets/chaei/chaei-08.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph" data-cap="личный кадр"><div class="ph-fill"><img src="assets/chaei/chaei-09.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph wide" data-cap="личный кадр"><div class="ph-fill"><img src="assets/chaei/chaei-10.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph" data-cap="с косичками, красные колготки"><div class="ph-fill"><img src="assets/chaei/chaei-12.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph" data-cap="на крыше"><div class="ph-fill"><img src="assets/chaei/chaei-13.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph big" data-cap="с реквизитом"><div class="ph-fill"><img src="assets/chaei/chaei-14.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph" data-cap="личный кадр"><div class="ph-fill"><img src="assets/chaei/chaei-15.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph" data-cap="личный кадр"><div class="ph-fill"><img src="assets/chaei/chaei-16.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph wide" data-cap="у кирпичной стены"><div class="ph-fill"><img src="assets/chaei/chaei-17.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph" data-cap="личный кадр"><div class="ph-fill"><img src="assets/chaei/chaei-18.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph" data-cap="на пляже"><div class="ph-fill"><img src="assets/chaei/chaei-19.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph big" data-cap="личный кадр"><div class="ph-fill"><img src="assets/chaei/chaei-20.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph" data-cap="розовое поло"><div class="ph-fill"><img src="assets/chaei/chaei-21.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph" data-cap="перед зеркалом"><div class="ph-fill"><img src="assets/chaei/chaei-22.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph wide" data-cap="день рождения"><div class="ph-fill"><img src="assets/chaei/chaei-23.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph" data-cap="фанкам"><div class="ph-fill"><img src="assets/chaei/chaei-24.jpg" alt="chaei" loading="lazy"></div><div class="ph-tag en">fancam</div></div>
+    <div class="ph" data-cap="фанкам · doosan bears"><div class="ph-fill"><img src="assets/chaei/chaei-25.jpg" alt="chaei" loading="lazy"></div><div class="ph-tag en">fancam</div></div>
+    <div class="ph big" data-cap="фанкам"><div class="ph-fill"><img src="assets/chaei/chaei-26.jpg" alt="chaei" loading="lazy"></div><div class="ph-tag en">fancam</div></div>
+  </div>
+  </div>
+
+  <div class="gallery-section reveal">
+  <div class="gallery-section-label en">heart of woman</div>
+  <div class="gallery-grid" id="galleryGridGroup">
+    <div class="ph big" data-cap="simply k-pop"><div class="ph-fill"><img src="assets/heart-of-woman/how-01.jpg" alt="heart of woman" loading="lazy"></div><div class="ph-tag en">simply k-pop</div></div>
+    <div class="ph" data-cap="групповое фото"><div class="ph-fill"><img src="assets/heart-of-woman/how-02.jpg" alt="heart of woman" loading="lazy"></div></div>
+    <div class="ph" data-cap="групповое фото"><div class="ph-fill"><img src="assets/heart-of-woman/how-03.jpg" alt="heart of woman" loading="lazy"></div></div>
+    <div class="ph wide" data-cap="групповое фото"><div class="ph-fill"><img src="assets/heart-of-woman/how-04.jpg" alt="heart of woman" loading="lazy"></div></div>
+    <div class="ph big" data-cap="пресс-фото"><div class="ph-fill"><img src="assets/heart-of-woman/how-05.jpg" alt="heart of woman" loading="lazy"></div></div>
+    <div class="ph" data-cap="групповое фото"><div class="ph-fill"><img src="assets/heart-of-woman/how-06.jpg" alt="heart of woman" loading="lazy"></div></div>
+    <div class="ph" data-cap="групповое фото"><div class="ph-fill"><img src="assets/heart-of-woman/how-07.jpg" alt="heart of woman" loading="lazy"></div></div>
+    <div class="ph wide" data-cap="групповое фото"><div class="ph-fill"><img src="assets/heart-of-woman/how-08.jpg" alt="heart of woman" loading="lazy"></div></div>
+    <div class="ph" data-cap="групповое фото"><div class="ph-fill"><img src="assets/heart-of-woman/how-09.jpg" alt="heart of woman" loading="lazy"></div></div>
+    <div class="ph" data-cap="групповое фото"><div class="ph-fill"><img src="assets/heart-of-woman/how-10.jpg" alt="heart of woman" loading="lazy"></div></div>
+  </div>
+  </div>
+
+  <div class="roulette">
+    <div class="eyebrow">daily mood</div>
+    <button class="roulette-btn en" id="rouletteBtn">какая ты чэи сегодня?</button>
+    <div class="roulette-card" id="rouletteCard">
+      <img id="rouletteImg" src="" alt="">
+      <div class="roulette-card-cap"><b id="rouletteCapMain"></b><span id="rouletteCapSub"></span></div>
+    </div>
+  </div>
+</section>
+
+<div class="photo-modal" id="photoModal">
+  <div class="photo-modal-inner">
+    <button class="photo-modal-close" id="photoModalClose">×</button>
+    <div class="photo-modal-counter" id="photoModalCounter"></div>
+    <button class="photo-modal-nav photo-modal-prev" id="photoModalPrev" aria-label="previous">‹</button>
+    <img id="photoModalImg" src="" alt="">
+    <button class="photo-modal-nav photo-modal-next" id="photoModalNext" aria-label="next">›</button>
+    <div class="photo-modal-cap en" id="photoModalCap"></div>
+    <div class="photo-modal-hint en"><span class="arrow">←</span>swipe<span class="arrow">→</span></div>
+  </div>
+</div>
+
+<!-- ================= VIDEOS ================= -->
+<section class="shell" id="videos">
+  <div class="shell-head reveal">
+    <div>
+      <div class="eyebrow">watch her journey</div>
+      <h2 class="shell-title en">video archive <sup>04</sup></h2>
+    </div>
+  </div>
+
+  <div class="vid-tabs reveal en">
+    <button class="vid-tab active" data-cat="all">все</button>
+    <button class="vid-tab" data-cat="ut">universe ticket</button>
+    <button class="vid-tab" data-cat="hpp">hip pop princess</button>
+    <button class="vid-tab" data-cat="tmh">teach me how</button>
+    <button class="vid-tab" data-cat="how">heart of woman</button>
+    <button class="vid-tab" data-cat="stages">сцены</button>
+    <button class="vid-tab" data-cat="fancams">фанкамы</button>
+  </div>
+
+  <div class="vid-list reveal">
+    <div class="vid-row" data-cat="ut" data-yt="D86XOtV07b0">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">universe ticket — moving profile <span class="sub">18.07.2023</span></div>
+    </div>
+    <div class="vid-row" data-cat="ut" data-yt="lug4QKx6YuM">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">universe ticket — concept video <span class="sub">02.08.2023</span></div>
+    </div>
+    <div class="vid-row" data-cat="ut" data-yt="xGk4gjyIq8c">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">«моя вселенная» — индивидуальное видео <span class="sub">universe ticket, 06.09.2023</span></div>
+    </div>
+    <div class="vid-row" data-cat="ut" data-yt="U1WHT3I5Plk">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">сигнальная песня «같이 갈래?» — вертикальная камера <span class="sub">universe ticket, 14.10.2023</span></div>
+    </div>
+    <div class="vid-row" data-cat="hpp" data-yt="JIzTflWAvQU">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">hip pop princess — self-styling group cypher <span class="sub">17.09.2025</span></div>
+    </div>
+    <div class="vid-row" data-cat="hpp" data-yt="NDv-q7gSnYk">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">hip pop princess — bad news (kiss of life cover) <span class="sub">фанкам korea c, 2025</span></div>
+    </div>
+    <div class="vid-row" data-cat="hpp" data-yt="ejfFcqMedmI">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">hip pop princess — crown (prod. gan) <span class="sub">team a, 2025</span></div>
+    </div>
+    <div class="vid-row" data-cat="tmh" data-yt="Nf6rFY_K-uk">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">teach me how — трейлер реалити <span class="sub">24.03.2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="tmh" data-yt="Lt2tuFnbynk">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">teach me how — первый эпизод <span class="sub">2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="how" data-yt="h8HGbj0enmg">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">«나를 잃지 않는 방법 (lost in proof)» — official mv <span class="sub">h.o.w official, 30.05.2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="how" data-yt="MB4F09i9Iwg">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">lost in proof — official mv <span class="sub">1theK, 30.05.2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="how" data-yt="KtbzTI_srwc">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">lost in proof — mv teaser 1 <span class="sub">май 2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="how" data-yt="v10wV6hvlXk">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">lost in proof — performance video <span class="sub">2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="how" data-yt="gYOiSlWuVYs">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">lost in proof — it's live band live <span class="sub">2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="how" data-yt="fykhrS3pm1Q">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">달라 ($.$) — mv teaser <span class="sub">май 2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="how" data-yt="GbHDtOzluUI">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">close to me — mv teaser <span class="sub">май 2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="how" data-yt="n34imFZpwZQ">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">tea — archiving video <span class="sub">закулисье съёмок, 2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="how" data-yt="L2sTmT1I2C0">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">my vision — performance video <span class="sub">2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="stages" data-yt="HEJ2OlX4hZk">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">lost in proof — hot debut stage <span class="sub">show champion ep.599, 03.06.2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="stages" data-yt="hbykKBpGedw">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">lost in proof — show! music core <span class="sub">mbc, 06.06.2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="stages" data-yt="KIIWvKmFqkI">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">lost in proof — m countdown <span class="sub">mnet ep.932, 11.06.2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="stages" data-yt="xx9nS-PrMBE">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">how not to lose myself — music bank <span class="sub">kbs world tv, 12.06.2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="stages" data-yt="49IqZVldq4k">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">lost in proof — show! music core <span class="sub">mbc, 13.06.2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="fancams" data-yt="r0FGT7ts05U">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">чэи — ending fairy <span class="sub">the show, 2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="fancams" data-yt="RJCxt4qgTA0">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">джихён — 직캠, lost in proof <span class="sub">simply k-pop ep.11, 19.06.2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="fancams" data-yt="PyzWiIx4cAg">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">лири — 직캠, lost in proof <span class="sub">simply k-pop ep.11, 19.06.2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="fancams" data-yt="slDahsuMiEo">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">люин — 직캠, lost in proof <span class="sub">simply k-pop ep.11, 19.06.2026</span></div>
+    </div>
+    <div class="vid-row" data-cat="fancams" data-yt="cBeBQJ6Zvh4">
+      <div class="vid-play">▶</div>
+      <div class="vid-title en">лири — 직캠, tea <span class="sub">фан-встреча, 02.08.2026</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="vid-modal" id="vidModal">
+  <div class="vid-modal-inner">
+    <button class="vid-modal-close" id="vidModalClose">×</button>
+    <iframe id="vidModalFrame" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  </div>
+</div>
+
+<div class="era-modal" id="eraModal">
+  <div class="era-modal-inner">
+    <button class="era-modal-close" id="eraModalClose">×</button>
+    <div class="era-modal-date en" id="eraModalDate"></div>
+    <div class="era-modal-title en" id="eraModalTitle"></div>
+    <p class="era-modal-text" id="eraModalText"></p>
+    <div class="era-modal-missions" id="eraModalMissions"></div>
+  </div>
+</div>
+
+<footer>
+  <div>
+    <div class="foot-mark">chaei ⋆ 채이</div>
+    <div class="foot-note en">unofficial fan archive · not affiliated with blue brown records</div>
+  </div>
+  <div class="foot-note en">made with ♡ · updated 2026</div>
+</footer>
+
+<script>
+  // member tiles — tap to swap the detail panel instead of scrolling five cards
+  const membersData = {
+    jihyun: { avatar:'https://i.ytimg.com/vi/RJCxt4qgTA0/hqdefault.jpg', name:'jihyun', role:'лидер · мейн-дэнсер · саб-вокалистка', bio:'настоящее имя — чхве джихён (최지현), 8 ноября 2004. успела побывать в двух составах, которые так и не дебютировали — howz и 4iren (4iren должны были дебютировать в начале 2025-го, но группу расформировали ещё до дебюта), а до этого прошла r u next? от hybe и выбыла на 9 эпизоде с 12 местом. в blue brown records пришла в январе 2026 вместе с суин — раньше остальных участниц — и на реалити teach me how тренировала их как капитан команды.' },
+    ayne: { avatar:'', name:'ayne', role:'главная вокалистка', bio:'настоящее имя — хан чонён (한정연), 18 августа 2005. восемь лет занималась академическим вокалом и училась на вокальном отделении — поэтому с дебюта поёт вживую без исключений, включая верхние ноты без подстраховки. любит пересматривать тревел-влоги и мечтает объехать полмира, а ещё обожает выбирать новые пижамы.' },
+    liri: { avatar:'https://i.ytimg.com/vi/PyzWiIx4cAg/hqdefault.jpg', name:'liri', role:'олл-раундер', bio:'настоящее имя — ли дагён (이다경), 12 февраля 2007. с детства занималась балетом и в 2023-м забрала первое место на youth grand prix korea в полуфинале — поэтому в перформансе группы у неё всегда самая чистая линия рук. каждый вечер пишет в дневник на планшете, любит матчу и гулять с собакой.' },
+    liuyin: { avatar:'https://i.ytimg.com/vi/slDahsuMiEo/hqdefault.jpg', name:'liuyin', role:'рэпер · саб-вокалистка · макнэ', bio:'родилась в риме в китайской семье 17 ноября 2007, свободно говорит на шести языках. решила стать айдолом, увидев дебютную сцену blackpink — специально переехала в корею, а когда чуть не вернулась обратно в италию, договорилась с мамой ещё на три месяца поисков компании. трейнилась около полугода. в детстве каталась на лошадях и рисовала, обожает йогурт с черникой и кимчи-тиге.' },
+    chaei: { avatar:'https://i.ytimg.com/vi/r0FGT7ts05U/hqdefault.jpg', name:'chaei', role:'рэпер · саб-вокалистка', bio:'до дебюта — юн суин (윤수인), 21 июля 2005. прошла universe ticket и hip pop princess, оба раза не дошла до финала — и оба раза возвращалась к тренировкам. рост 164 см, mbti entj. любит рисовать, придумывать хореографию и одинаково — котов и собак.' }
+  };
+  const memberTiles = document.querySelectorAll('.member-tile');
+  const mdName = document.getElementById('mdName');
+  const mdRole = document.getElementById('mdRole');
+  const mdBio = document.getElementById('mdBio');
+  const mdAvatar = document.getElementById('mdAvatar');
+  memberTiles.forEach(tile=>{
+    tile.addEventListener('click', ()=>{
+      memberTiles.forEach(t=>t.classList.remove('active'));
+      tile.classList.add('active');
+      const d = membersData[tile.dataset.member];
+      if(d){
+        mdName.textContent = d.name; mdRole.textContent = d.role; mdBio.textContent = d.bio;
+        if(d.avatar){ mdAvatar.style.backgroundImage = `url('${d.avatar}')`; mdAvatar.textContent = ''; }
+        else { mdAvatar.style.backgroundImage = ''; mdAvatar.textContent = d.name.charAt(0).toUpperCase(); }
+      }
+    });
+  });
+
+  // video rows — play real ones inline, open info pages for the rest
+  const vidModal = document.getElementById('vidModal');
+  const vidFrame = document.getElementById('vidModalFrame');
+  const vidClose = document.getElementById('vidModalClose');
+  document.querySelectorAll('.vid-row').forEach(row=>{
+    row.addEventListener('click', ()=>{
+      const yt = row.dataset.yt;
+      if(yt){
+        vidFrame.src = 'https://www.youtube.com/embed/' + yt + '?autoplay=1';
+        vidModal.classList.add('open');
+      } else if(row.dataset.href){
+        window.open(row.dataset.href, '_blank', 'noopener');
+      }
+    });
+  });
+  function closeVidModal(){
+    vidModal.classList.remove('open');
+    vidFrame.src = '';
+  }
+  vidClose.addEventListener('click', closeVidModal);
+  vidModal.addEventListener('click', (e)=>{ if(e.target === vidModal) closeVidModal(); });
+
+  // video tabs — filter the archive by era instead of scrolling one long list
+  const vidTabs = document.querySelectorAll('.vid-tab');
+  const vidRows = document.querySelectorAll('.vid-row');
+  vidTabs.forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      vidTabs.forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      const cat = tab.dataset.cat;
+      vidRows.forEach(row=>{
+        row.classList.toggle('hidden', cat !== 'all' && row.dataset.cat !== cat);
+      });
+    });
+  });
+
+  // hamburger menu overlay
+  const menuBtn = document.getElementById('menuBtn');
+  const menuOverlay = document.getElementById('menuOverlay');
+  const menuClose = document.getElementById('menuClose');
+  menuBtn.addEventListener('click', ()=> menuOverlay.classList.add('open'));
+  menuClose.addEventListener('click', ()=> menuOverlay.classList.remove('open'));
+  document.querySelectorAll('.menu-link').forEach(link=>{
+    link.addEventListener('click', ()=> menuOverlay.classList.remove('open'));
+  });
+
+  // progress bar
+  const progress = document.getElementById('progress');
+  function updateProgress(){
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progress.style.width = scrolled + '%';
+  }
+  document.addEventListener('scroll', updateProgress);
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold:0.12 });
+  revealEls.forEach(el=>io.observe(el));
+
+  // dot nav active state + click scroll
+  const sections = ['#hero','#story','#group','#gallery','#videos'].map(id=>document.querySelector(id));
+  const dots = document.querySelectorAll('.dotnav button');
+  dots.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelector(btn.dataset.target).scrollIntoView({behavior:'smooth'});
+    });
+  });
+  const navIO = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const idx = sections.indexOf(entry.target);
+        dots.forEach(d=>d.classList.remove('active'));
+        if(dots[idx]) dots[idx].classList.add('active');
+      }
+    });
+  }, { threshold:0.5 });
+  sections.forEach(s=> s && navIO.observe(s));
+
+  // draggable horizontal track (swipe carousel)
+  const track = document.getElementById('track');
+  const scrubFill = document.getElementById('scrubFill');
+  let isDown = false, startX, scrollLeft, dragMoved = false;
+
+  function updateScrub(){
+    const max = track.scrollWidth - track.clientWidth;
+    const pct = max > 0 ? (track.scrollLeft / max) * 100 : 0;
+    scrubFill.style.width = Math.max(6,pct) + '%';
+  }
+  track.addEventListener('scroll', updateScrub);
+  updateScrub();
+
+  track.addEventListener('mousedown', (e)=>{
+    isDown = true;
+    dragMoved = false;
+    track.classList.add('dragging');
+    startX = e.pageX - track.offsetLeft;
+    scrollLeft = track.scrollLeft;
+  });
+  track.addEventListener('mouseleave', ()=>{ isDown = false; track.classList.remove('dragging'); });
+  track.addEventListener('mouseup', ()=>{ isDown = false; track.classList.remove('dragging'); });
+  track.addEventListener('mousemove', (e)=>{
+    if(!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - track.offsetLeft;
+    const walk = (x - startX) * 1.4;
+    if(Math.abs(walk) > 4) dragMoved = true;
+    track.scrollLeft = scrollLeft - walk;
+  });
+
+  // era cards — tap opens the full story for that period (skipped if it was a drag-scroll)
+  const eraData = {
+    1:{ date:'до 2023 · трейни', title:'jellyfish entertainment',
+      text:'До starting house суин была трейни jellyfish entertainment. Этот период почти не освещён отдельно, но агентство осталось в её официальной биографии даже после того, как она перешла дальше. Из jellyfish она позже перебралась в starting house entertainment, где уже начала более заметную часть своего пути.', missions:[] },
+    2:{ date:'2023 — 2025 · трейни', title:'starting house',
+      text:'Starting house entertainment — небольшое корейское агентство, основанное 24 сентября 2020 года Лим Ёнуном, бывшим менеджером департамента в cube entertainment. В разные годы под агентством существовали team she, adya и starting house mate — именно последний состав стал для суин основным местом тренировок с 2023 по 2025 год.\n\nЧерез starting house mate за это время прошли Рю Ёнсу, Чон Совон, Лим Ена, Юн Чэын, Чо Сынчхэ, Ю Каыль, Ким Суджин и суин. С Ким Суджин у неё сложилась особенно близкая дружба — обе были трейни starting house, обе позже участвовали в universe ticket, а в 2025 году снова встретились на unpretty rapstar: hip pop princess. С Юн Чэын суин тоже сблизилась позже, уже во время съёмок hip pop princess — они ровесницы.\n\nК 2025 году starting house практически перестала подавать признаки жизни: сайт сняли, а соцсети, кроме fromm, давно не обновлялись. Среди фанатов закрепилось мнение, что агентство фактически прекратило работу примерно в тот же период.', missions:[] },
+    3:{ date:'18 июля 2023 · survival, sbs', title:'universe ticket',
+      text:'Universe ticket — шоу от sbs, где десятки участниц соревновались за дебют в группе-победителе unis. Суин представили как участницу 18 июля 2023 года, когда вышло её moving profile. Она выступала от лица starting house entertainment, ей было 18 лет.\n\nВ анкете она указала, что хочет работать на позициях мейн-танцовщицы и лид-вокалистки, а прозвище на шоу у неё было ванеллопи (바넬로피). Перед выходом на сцену у неё была небольшая привычка — она всегда перезавязывала шнурки.\n\nСледом вышла серия промо-роликов: concept video 2 августа, my universe 6 сентября, личный сценический фанкам 9 сентября, message from 13 сентября, вертикальная съёмка под сигнальную песню шоу «같이 갈래? (universe)» 14 октября и челлендж-видео 25 октября. Сама песня «같이 갈래? (universe)» вышла 8 октября 2023 года и стала общим синглом всех участниц шоу.', missions:['moving profile','my universe'] },
+    4:{ date:'ноябрь — декабрь 2023 · elimination', title:'rise & elimination',
+      text:'Первый эпизод universe ticket вышел 18 ноября 2023 года и открылся объявлением предварительных рейтингов: суин заняла в нём 45 место.\n\nК четвёртому эпизоду она поднялась с 45 на 34 место, набрав 1598.2 балла — рост сразу на 11 позиций. Но этого не хватило: по итогам того же эпизода она выбыла из шоу, попав в первую волну отсева, которую называют «universe 탈락자».\n\nДаже после этого она успела появиться в декабрьском спешле revenge battle — в команде «청순 위너스» («невинные победительницы»), которая исполнила кавер на «다시 만난 세계» girls\' generation. Фанкам-версия этого выступления вышла 2 декабря 2023 года.\n\nДальше в проекте оставались только те, кто прошёл level station и ещё несколько раундов отбора, из которых в итоге и сложился финальный состав unis.', missions:['revenge battle','청순 위너스'] },
+    5:{ date:'2024 — 2025 · трейни', title:'между шоу',
+      text:'После вылета суин вернулась в starting house entertainment и продолжила тренироваться уже в статусе трейни starting house mate. Рядом с ней в этом же составе осталась и Ким Суджин, которая на том же шоу дошла до полуфинала и заняла 18 место.\n\nМежду universe ticket и hip pop princess прошло почти два года, и всё это время суин официально числилась трейни starting house.', missions:[] },
+    6:{ date:'сентябрь — октябрь 2025 · survival, mnet', title:'hip pop princess',
+      text:'Unpretty rapstar: hip pop princess — совместный корейско-японский проект mnet, цель которого — собрать глобальную хип-хоп гёрл-группу. Для этого cj enm и рекламное агентство hakuhodo создали совместное предприятие chapter-i, которому должен был принадлежать финальный состав.\n\n15 октября 2025 года в отеле ellie & в сеульском районе каннам прошла пресс-конференция шоу, на которой суин присутствовала лично. В проекте участвовали 40 девушек, примерно поровну кореянок и японок, и подавляющее большинство — трейни без рэп- или хип-хоп-бэкграунда. Шоу шло с 16 октября по 19 декабря 2025 года.\n\nСуин анонсировали как участницу в начале сентября 2025 года. Её профиль на шоу: рост 164 см, mbti entj, день рождения 21 июля 2005 года.\n\n17 сентября, ещё до старта шоу, вышла серия груп-сайферов на четыре тематических юнита: celebrity, escape the school, self-styling и free youth, каждый в корейской и японской версии. Суин вошла в корейский self-styling вместе с Ким Суджин, Мин Джихо, Юн Чэын и Ли Чэхён.', missions:['self-styling','group cypher'] },
+    7:{ date:'октябрь — ноябрь 2025 · missions', title:'bad news, crown',
+      text:'Групповые сайфер-видео стали первым публичным выступлением суин в рамках hip pop princess — они вышли ещё до премьеры первого эпизода и должны были показать базовые рэп-навыки каждой участницы.\n\nНа «힙팝 챌린지» (hip pop challenge), первом соревновательном блоке шоу, суин выступила соло с кавером на «bad news» kiss of life — её фанкам вышел под обозначением «korea c».\n\nНа «메인 프로듀서 신곡 미션» (миссия с новой песней от главного продюсера) она выступала в составе team a с треком «crown» (prod. gan).\n\nДальше по формату шоу шли «1 vs 1 창작 배틀» (батл на номера, созданные с нуля, третий эпизод) и вторая волна исключений по его итогам. Под неё попали Шин Юкён, Ли Чэён, Квон Дохи, Ли Сохён, Ханаби и Нацухо — но суин этот этап прошла.', missions:['bad news','crown'] },
+    8:{ date:'декабрь 2025 · момент', title:'the magic girl scene',
+      text:'Кульминацией пути суин на шоу стала сцена в рамках «스페셜 프로듀서 신곡 미션» (спешл продюсер миссия). Команда, в которой она была лидером по концепции, выбрала образ «마법소녀» — девочка-волшебница.\n\nБольшинство остальных участниц отреагировали на идею с недоумением: кто-то не понимал, зачем на шоу про хип-хоп вообще появляется магическая эстетика. Команда суин в итоге проиграла эту миссию.\n\nНо именно эта сцена стала самой резонансной за всё шоу — по оценке комментаторов, она вызвала больше отклика, чем любое другое выступление hip pop princess.\n\nHip pop princess в целом получила смешанные отзывы: из-за отсутствия рэп-бэкграунда у большинства участниц (многие вообще ни разу не читали рэп до кастинга) качество рэпа выходило слабым, а концепция шоу расходилась с его названием. На этом фоне магическую сцену суин одни считали странностью, другие — самым ярким моментом проекта.', missions:[] },
+    9:{ date:'декабрь 2025 · elimination', title:'выбыла',
+      text:'Суин выбыла на третьей волне — после «네 번째 트랙 경쟁» (четвёртое трек-соревнование) с той самой магической концепцией. Вместе с ней в этом раунде выбыли Ким Еын, Кокоро, Ким Чэрин, Сеа, Юнон, Ли Чэхён, Сена, Ян Джэюн и Карин. Её итоговый рейтинг на момент вылета — 22 место из сорока.\n\nДо финала дошли 16 участниц, а итоговый состав дебютной группы h//pe princess — семь участниц, включая Ким Суджин — объявили по итогам финального прямого эфира 18–19 декабря 2025 года. Суин в этот состав не попала.\n\nПосле второго подряд неудачного шоу она снова оказалась без чёткой перспективы дебюта. Так продолжалось до января 2026 года.', missions:[] },
+    10:{ date:'30 января 2026 · подписание', title:'blue brown records',
+      text:'30 января 2026 года стало известно, что суин подписала контракт с blue brown records — новым лейблом, который основали певец Хвисон и креативный директор Мён Сану, известный работой над брендингом ateez, enhypen и illit.\n\nВместе с суин в проект вошла и Чхве Джихён, участница jtbc-шоу r u next?. Это были первые официально объявленные участницы будущей дебютной женской группы лейбла.', missions:[] },
+    11:{ date:'24 марта — 14 апреля 2026 · реалити', title:'teach me how',
+      text:'24 марта 2026 года на канале it\'s live, в коллаборации с проектом «뮤니버스», стартовало реалити teach me how, документировавшее процесс формирования дебютного состава.\n\nВ первом эпизоде уже показывали четырёх трейни, тренирующихся вместе под лидерством Чхве Джихён: Хан Чонён, Ли Дагён и Пань Люинь. По ходу эпизода к ним присоединилась суин.\n\nВ этом же выпуске трейни впервые получили индивидуальные оценки: про Чонён сказали, что кроме тембра голоса всё остальное — результат упорной работы; Дагён отметили за собственный узнаваемый образ; Люинь похвалили за глобальный потенциал. Хореограф дал жёсткую обратную связь: по его словам, детали движений не совпадали, а амплитуда была слишком маленькой. Компания на старте прямо заявила, что состав дебютной группы ещё не определён.\n\nТизер-аккаунт будущей группы в соцсетях назывался heart5woman — задолго до официального названия это имя уже намекало на концепцию «пяти сердец».\n\n14 апреля 2026 года стало известно сценическое имя суин — чэи (채이).', missions:[] },
+    12:{ date:'28 мая 2026 · дебют', title:'heart of woman',
+      text:'28 мая 2026 года, в четверг, в 18:00 по корейскому времени, heart of woman дебютировали с первым полноформатным альбомом heart byte : legacy. Дебютным релизом сразу стал полноценный альбом, а не мини-альбом, что для новой группы редкость. Титульный трек — «나를 잃지 않는 방법 (lost in proof)».\n\nГруппа сразу вышла на сцену m countdown (mnet) и music bank (kbs 2tv), позже — show! music core (mbc) и it\'s live. С самого дебюта участницы пели вживую полностью, без исключений — мейн-вокалистка Айне, в частности, брала высокие ноты без подстраховки.\n\nВизуальная концепция дебюта строилась на аналоговой эстетике, отсылающей к кассетным и cd-плеерам, и на общем y2k-настроении. Тексты песен построены преимущественно на английском, но с заметным использованием корейского.\n\nВ июне 2026 года heart of woman заняли 29 место в рейтинге репутации бренда среди гёрл-групп.', missions:[] }
+  };
+  const eraModal = document.getElementById('eraModal');
+  const eraModalDate = document.getElementById('eraModalDate');
+  const eraModalTitle = document.getElementById('eraModalTitle');
+  const eraModalText = document.getElementById('eraModalText');
+  const eraModalMissions = document.getElementById('eraModalMissions');
+  const eraModalClose = document.getElementById('eraModalClose');
+  function openEraModal(id){
+    const d = eraData[id];
+    if(!d) return;
+    eraModalDate.textContent = d.date;
+    eraModalTitle.textContent = d.title;
+    eraModalText.textContent = d.text;
+    eraModalMissions.innerHTML = d.missions.map(m=>`<span class="mission-tag en">${m}</span>`).join('');
+    eraModal.classList.add('open');
+  }
+  function closeEraModal(){ eraModal.classList.remove('open'); }
+  document.querySelectorAll('.era-card').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      if(dragMoved) return;
+      openEraModal(card.dataset.era);
+    });
+  });
+  eraModalClose.addEventListener('click', closeEraModal);
+  eraModal.addEventListener('click', (e)=>{ if(e.target === eraModal) closeEraModal(); });
+
+  // gallery lightbox — tap a tile to open it, then swipe or use arrows to browse the rest of that section
+  const photoModal = document.getElementById('photoModal');
+  const photoModalImg = document.getElementById('photoModalImg');
+  const photoModalCap = document.getElementById('photoModalCap');
+  const photoModalCounter = document.getElementById('photoModalCounter');
+  const photoModalClose = document.getElementById('photoModalClose');
+  const photoModalPrev = document.getElementById('photoModalPrev');
+  const photoModalNext = document.getElementById('photoModalNext');
+  let photoSet = [];
+  let photoIndex = 0;
+
+  function showPhoto(i){
+    if(!photoSet.length) return;
+    photoIndex = (i + photoSet.length) % photoSet.length;
+    const ph = photoSet[photoIndex];
+    const img = ph.querySelector('img');
+    photoModalImg.src = img.src;
+    photoModalCap.textContent = ph.dataset.cap || '';
+    photoModalCounter.textContent = (photoIndex + 1) + ' / ' + photoSet.length;
+  }
+  function openPhotoModal(ph){
+    const grid = ph.closest('.gallery-grid');
+    photoSet = grid ? Array.from(grid.querySelectorAll('.ph')) : [ph];
+    showPhoto(photoSet.indexOf(ph));
+    photoModal.classList.add('open');
+  }
+  function closePhotoModal(){ photoModal.classList.remove('open'); photoModalImg.src = ''; }
+
+  document.querySelectorAll('.ph').forEach(ph=>{
+    ph.addEventListener('click', ()=> openPhotoModal(ph));
+  });
+  photoModalClose.addEventListener('click', closePhotoModal);
+  photoModalPrev.addEventListener('click', ()=> showPhoto(photoIndex - 1));
+  photoModalNext.addEventListener('click', ()=> showPhoto(photoIndex + 1));
+  photoModal.addEventListener('click', (e)=>{ if(e.target === photoModal) closePhotoModal(); });
+  document.addEventListener('keydown', (e)=>{
+    if(!photoModal.classList.contains('open')) return;
+    if(e.key === 'Escape') closePhotoModal();
+    if(e.key === 'ArrowLeft') showPhoto(photoIndex - 1);
+    if(e.key === 'ArrowRight') showPhoto(photoIndex + 1);
+  });
+
+  // swipe support for touch devices
+  let touchStartX = null;
+  photoModal.addEventListener('touchstart', (e)=>{ touchStartX = e.changedTouches[0].clientX; }, {passive:true});
+  photoModal.addEventListener('touchend', (e)=>{
+    if(touchStartX === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if(Math.abs(dx) > 40){ showPhoto(photoIndex + (dx < 0 ? 1 : -1)); }
+    touchStartX = null;
+  }, {passive:true});
+
+  // "which chaei are you today" — random pull from a small pool of real chaei photos
+  const rouletteBtn = document.getElementById('rouletteBtn');
+  const rouletteCard = document.getElementById('rouletteCard');
+  const rouletteImg = document.getElementById('rouletteImg');
+  const rouletteCapMain = document.getElementById('rouletteCapMain');
+  const rouletteCapSub = document.getElementById('rouletteCapSub');
+  function chaeiPool(){
+    return [
+      { src:'assets/chaei/chaei-01.jpg', main:'студийная чэи', sub:'личный архив' },
+      { src:'assets/chaei/chaei-02.jpg', main:'чэи с косичками', sub:'личный архив' },
+      { src:'assets/chaei/chaei-03.jpg', main:'обычная чэи', sub:'личный архив' },
+      { src:'assets/chaei/chaei-04.jpg', main:'school look чэи', sub:'личный архив' },
+      { src:'assets/chaei/chaei-05.jpg', main:'сегодняшняя чэи', sub:'личный архив' },
+      { src:'assets/chaei/chaei-06.jpg', main:'сегодняшняя чэи', sub:'личный архив' },
+      { src:'assets/chaei/chaei-07.jpg', main:'сегодняшняя чэи', sub:'личный архив' },
+      { src:'assets/chaei/chaei-08.jpg', main:'сегодняшняя чэи', sub:'личный архив' },
+      { src:'assets/chaei/chaei-09.jpg', main:'сегодняшняя чэи', sub:'личный архив' },
+      { src:'assets/chaei/chaei-10.jpg', main:'сегодняшняя чэи', sub:'личный архив' },
+      { src:'assets/chaei/chaei-11.jpg', main:'обычная чэи', sub:'без сцены, без камер' },
+      { src:'assets/chaei/chaei-12.jpg', main:'чэи с косичками', sub:'личный архив' },
+      { src:'assets/chaei/chaei-13.jpg', main:'чэи на крыше', sub:'личный архив' },
+      { src:'assets/chaei/chaei-14.jpg', main:'чэи с реквизитом', sub:'личный архив' },
+      { src:'assets/chaei/chaei-15.jpg', main:'сегодняшняя чэи', sub:'личный архив' },
+      { src:'assets/chaei/chaei-16.jpg', main:'сегодняшняя чэи', sub:'личный архив' },
+      { src:'assets/chaei/chaei-17.jpg', main:'чэи у кирпичной стены', sub:'личный архив' },
+      { src:'assets/chaei/chaei-18.jpg', main:'сегодняшняя чэи', sub:'личный архив' },
+      { src:'assets/chaei/chaei-19.jpg', main:'чэи на пляже', sub:'личный архив' },
+      { src:'assets/chaei/chaei-20.jpg', main:'сегодняшняя чэи', sub:'личный архив' },
+      { src:'assets/chaei/chaei-21.jpg', main:'чэи в розовом поло', sub:'личный архив' },
+      { src:'assets/chaei/chaei-22.jpg', main:'чэи перед зеркалом', sub:'личный архив' },
+      { src:'assets/chaei/chaei-23.jpg', main:'чэи в день рождения', sub:'#happy_chaei_day' },
+      { src:'assets/chaei/chaei-24.jpg', main:'чэи на фанкаме', sub:'@liri2e' },
+      { src:'assets/chaei/chaei-25.jpg', main:'чэи на фанкаме', sub:'doosan bears, @체니' },
+      { src:'assets/chaei/chaei-26.jpg', main:'чэи на фанкаме', sub:'@cheatwave_' }
+    ];
+  }
+  let lastRoulette = -1;
+  rouletteBtn.addEventListener('click', ()=>{
+    const pool = chaeiPool();
+    let i = Math.floor(Math.random() * pool.length);
+    if(pool.length > 1 && i === lastRoulette) i = (i + 1) % pool.length;
+    lastRoulette = i;
+    const pick = pool[i];
+    rouletteCard.classList.remove('show');
+    setTimeout(()=>{
+      rouletteImg.src = pick.src;
+      rouletteCapMain.textContent = pick.main;
+      rouletteCapSub.textContent = pick.sub;
+      rouletteCard.classList.add('show');
+      rouletteBtn.textContent = 'ещё раз';
+    }, 120);
+  });
+</script>
+
+</body>
+</html>
