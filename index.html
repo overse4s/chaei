@@ -695,12 +695,15 @@
   .roulette-btn{
     all:unset; cursor:pointer;
     font-family:inherit; font-weight:600; font-size:13px; letter-spacing:.02em;
-    color:#fff; background:var(--rose-deep);
+    color:#fff; background:rgba(189,111,137,0.55);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    backdrop-filter: blur(14px) saturate(160%);
+    border:1px solid rgba(255,255,255,0.4);
     padding:16px 30px; border-radius:40px;
     transition:all .25s ease;
     box-shadow:0 14px 30px -14px rgba(189,111,137,0.5);
   }
-  .roulette-btn:hover{ background:var(--rose); transform:translateY(-2px); }
+  .roulette-btn:hover{ background:rgba(189,111,137,0.75); transform:translateY(-2px); }
   .roulette-card{
     width:min(88vw, 300px);
     border-radius:22px;
@@ -731,7 +734,12 @@
     transition:all .2s ease;
   }
   .vid-tab:hover{ border-color:var(--rose-deep); color:var(--rose-deep); }
-  .vid-tab.active{ background:var(--rose-deep); border-color:var(--rose-deep); color:#fff; }
+  .vid-tab.active{
+    background:rgba(189,111,137,0.5);
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    backdrop-filter: blur(10px) saturate(160%);
+    border-color:rgba(189,111,137,0.6); color:#fff;
+  }
   .vid-row.hidden{ display:none; }
   .vid-list{ display:flex; flex-direction:column; }
   .vid-row{
@@ -752,7 +760,12 @@
     transition:all .25s ease;
     flex-shrink:0;
   }
-  .vid-row:hover .vid-play{ background:var(--rose-deep); border-color:var(--rose-deep); color:#fff; }
+  .vid-row:hover .vid-play{
+    background:rgba(189,111,137,0.55);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border-color:rgba(189,111,137,0.6); color:#fff;
+  }
   .vid-title{ font-size:14.5px; }
   .vid-title .sub{
     display:block; font-family:inherit; font-weight:500; font-size:10px;
@@ -1017,29 +1030,29 @@
 
   <div class="members-row reveal" id="membersRow">
     <button class="member-tile active" data-member="jihyun">
-      <div class="member-tile-avatar" style="background-image:url('https://i.ytimg.com/vi/RJCxt4qgTA0/hqdefault.jpg')"></div>
+      <div class="member-tile-avatar" style="background-image:url('assets/members/jihyun.jpg'); background-size:280%; background-position:62% 35%;"></div>
       <div class="member-tile-name en">jihyun</div>
     </button>
     <button class="member-tile" data-member="ayne">
-      <div class="member-tile-avatar">A</div>
+      <div class="member-tile-avatar" style="background-image:url('assets/members/ayne.jpg'); background-size:260%; background-position:40% 38%;"></div>
       <div class="member-tile-name en">ayne</div>
     </button>
     <button class="member-tile" data-member="liri">
-      <div class="member-tile-avatar" style="background-image:url('https://i.ytimg.com/vi/PyzWiIx4cAg/hqdefault.jpg')"></div>
+      <div class="member-tile-avatar" style="background-image:url('assets/members/liri.jpg'); background-size:420%; background-position:22% 10%;"></div>
       <div class="member-tile-name en">liri</div>
     </button>
     <button class="member-tile" data-member="liuyin">
-      <div class="member-tile-avatar" style="background-image:url('https://i.ytimg.com/vi/slDahsuMiEo/hqdefault.jpg')"></div>
+      <div class="member-tile-avatar" style="background-image:url('assets/members/liuyin.jpg'); background-size:160%; background-position:55% 15%;"></div>
       <div class="member-tile-name en">liuyin</div>
     </button>
     <button class="member-tile" data-member="chaei">
-      <div class="member-tile-avatar" style="background-image:url('https://i.ytimg.com/vi/r0FGT7ts05U/hqdefault.jpg')"></div>
+      <div class="member-tile-avatar" style="background-image:url('assets/members/chaei.jpg'); background-size:140%; background-position:50% 28%;"></div>
       <div class="member-tile-name en">chaei</div>
     </button>
   </div>
 
   <div class="member-detail glass" id="memberDetail">
-    <div class="member-detail-avatar" id="mdAvatar" style="background-image:url('https://i.ytimg.com/vi/RJCxt4qgTA0/hqdefault.jpg')"></div>
+    <div class="member-detail-avatar" id="mdAvatar" style="background-image:url('assets/members/jihyun.jpg'); background-size:280%; background-position:62% 35%;"></div>
     <div class="member-detail-text">
       <div class="member-detail-name en" id="mdName">jihyun</div>
       <div class="member-detail-role" id="mdRole">лидер · мейн-дэнсер · саб-вокалистка</div>
@@ -1314,11 +1327,11 @@
 <script>
   // member tiles — tap to swap the detail panel instead of scrolling five cards
   const membersData = {
-    jihyun: { avatar:'https://i.ytimg.com/vi/RJCxt4qgTA0/hqdefault.jpg', name:'jihyun', role:'лидер · мейн-дэнсер · саб-вокалистка', bio:'настоящее имя — чхве джихён (최지현), 8 ноября 2004. успела побывать в двух составах, которые так и не дебютировали — howz и 4iren (4iren должны были дебютировать в начале 2025-го, но группу расформировали ещё до дебюта), а до этого прошла r u next? от hybe и выбыла на 9 эпизоде с 12 местом. в blue brown records пришла в январе 2026 вместе с суин — раньше остальных участниц — и на реалити teach me how тренировала их как капитан команды.' },
-    ayne: { avatar:'', name:'ayne', role:'главная вокалистка', bio:'настоящее имя — хан чонён (한정연), 18 августа 2005. восемь лет занималась академическим вокалом и училась на вокальном отделении — поэтому с дебюта поёт вживую без исключений, включая верхние ноты без подстраховки. любит пересматривать тревел-влоги и мечтает объехать полмира, а ещё обожает выбирать новые пижамы.' },
-    liri: { avatar:'https://i.ytimg.com/vi/PyzWiIx4cAg/hqdefault.jpg', name:'liri', role:'олл-раундер', bio:'настоящее имя — ли дагён (이다경), 12 февраля 2007. с детства занималась балетом и в 2023-м забрала первое место на youth grand prix korea в полуфинале — поэтому в перформансе группы у неё всегда самая чистая линия рук. каждый вечер пишет в дневник на планшете, любит матчу и гулять с собакой.' },
-    liuyin: { avatar:'https://i.ytimg.com/vi/slDahsuMiEo/hqdefault.jpg', name:'liuyin', role:'рэпер · саб-вокалистка · макнэ', bio:'родилась в риме в китайской семье 17 ноября 2007, свободно говорит на шести языках. решила стать айдолом, увидев дебютную сцену blackpink — специально переехала в корею, а когда чуть не вернулась обратно в италию, договорилась с мамой ещё на три месяца поисков компании. трейнилась около полугода. в детстве каталась на лошадях и рисовала, обожает йогурт с черникой и кимчи-тиге.' },
-    chaei: { avatar:'https://i.ytimg.com/vi/r0FGT7ts05U/hqdefault.jpg', name:'chaei', role:'рэпер · саб-вокалистка', bio:'до дебюта — юн суин (윤수인), 21 июля 2005. прошла universe ticket и hip pop princess, оба раза не дошла до финала — и оба раза возвращалась к тренировкам. рост 164 см, mbti entj. любит рисовать, придумывать хореографию и одинаково — котов и собак.' }
+    jihyun: { avatar:'assets/members/jihyun.jpg', avatarSize:'280%', avatarPos:'62% 35%', name:'jihyun', role:'лидер · мейн-дэнсер · саб-вокалистка', bio:'настоящее имя — чхве джихён (최지현), 8 ноября 2004. успела побывать в двух составах, которые так и не дебютировали — howz и 4iren (4iren должны были дебютировать в начале 2025-го, но группу расформировали ещё до дебюта), а до этого прошла r u next? от hybe и выбыла на 9 эпизоде с 12 местом. в blue brown records пришла в январе 2026 вместе с суин — раньше остальных участниц — и на реалити teach me how тренировала их как капитан команды.' },
+    ayne: { avatar:'assets/members/ayne.jpg', avatarSize:'260%', avatarPos:'40% 38%', name:'ayne', role:'главная вокалистка', bio:'настоящее имя — хан чонён (한정연), 18 августа 2005. восемь лет занималась академическим вокалом и училась на вокальном отделении — поэтому с дебюта поёт вживую без исключений, включая верхние ноты без подстраховки. любит пересматривать тревел-влоги и мечтает объехать полмира, а ещё обожает выбирать новые пижамы.' },
+    liri: { avatar:'assets/members/liri.jpg', avatarSize:'420%', avatarPos:'22% 10%', name:'liri', role:'олл-раундер', bio:'настоящее имя — ли дагён (이다경), 12 февраля 2007. с детства занималась балетом и в 2023-м забрала первое место на youth grand prix korea в полуфинале — поэтому в перформансе группы у неё всегда самая чистая линия рук. каждый вечер пишет в дневник на планшете, любит матчу и гулять с собакой.' },
+    liuyin: { avatar:'assets/members/liuyin.jpg', avatarSize:'160%', avatarPos:'55% 15%', name:'liuyin', role:'рэпер · саб-вокалистка · макнэ', bio:'родилась в риме в китайской семье 17 ноября 2007, свободно говорит на шести языках. решила стать айдолом, увидев дебютную сцену blackpink — специально переехала в корею, а когда чуть не вернулась обратно в италию, договорилась с мамой ещё на три месяца поисков компании. трейнилась около полугода. в детстве каталась на лошадях и рисовала, обожает йогурт с черникой и кимчи-тиге.' },
+    chaei: { avatar:'assets/members/chaei.jpg', avatarSize:'140%', avatarPos:'50% 28%', name:'chaei', role:'рэпер · саб-вокалистка', bio:'до дебюта — юн суин (윤수인), 21 июля 2005. прошла universe ticket и hip pop princess, оба раза не дошла до финала — и оба раза возвращалась к тренировкам. рост 164 см, mbti entj. любит рисовать, придумывать хореографию и одинаково — котов и собак.' }
   };
   const memberTiles = document.querySelectorAll('.member-tile');
   const mdName = document.getElementById('mdName');
@@ -1332,8 +1345,14 @@
       const d = membersData[tile.dataset.member];
       if(d){
         mdName.textContent = d.name; mdRole.textContent = d.role; mdBio.textContent = d.bio;
-        if(d.avatar){ mdAvatar.style.backgroundImage = `url('${d.avatar}')`; mdAvatar.textContent = ''; }
-        else { mdAvatar.style.backgroundImage = ''; mdAvatar.textContent = d.name.charAt(0).toUpperCase(); }
+        if(d.avatar){
+          mdAvatar.style.backgroundImage = `url('${d.avatar}')`;
+          mdAvatar.style.backgroundSize = d.avatarSize || 'cover';
+          mdAvatar.style.backgroundPosition = d.avatarPos || 'center 18%';
+          mdAvatar.textContent = '';
+        } else {
+          mdAvatar.style.backgroundImage = ''; mdAvatar.textContent = d.name.charAt(0).toUpperCase();
+        }
       }
     });
   });
