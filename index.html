@@ -968,7 +968,7 @@
           <button class="era-expand" aria-label="читать полностью">+</button>
         </div>
         <div class="era-title en">hip pop princess</div>
-        <p class="era-text">анонсирована участницей unpretty rapstar: hip pop princess. рост 164 см, mbti entj</p>
+        <p class="era-text">анонсирована участницей unpretty rapstar: hip pop princess</p>
       </div>
 
       <div class="era-card" data-era="7">
@@ -1113,7 +1113,7 @@
   <div class="gallery-section-label en">чэи</div>
   <div class="gallery-grid-wrap" id="galleryWrapChaei">
   <div class="gallery-grid" id="galleryGrid">
-    <div class="ph big" data-cap="студийный кадр"><div class="ph-fill"><img src="assets/chaei/chaei-01.jpg" alt="chaei" loading="lazy"></div></div>
+    <div class="ph big"><div class="ph-fill"><img src="assets/chaei/chaei-01.jpg" alt="chaei" loading="lazy"></div></div>
     <div class="ph" data-cap="с косичками"><div class="ph-fill"><img src="assets/chaei/chaei-02.jpg" alt="chaei" loading="lazy"></div></div>
     <div class="ph" data-cap="личный кадр"><div class="ph-fill"><img src="assets/chaei/chaei-03.jpg" alt="chaei" loading="lazy"></div></div>
     <div class="ph wide" data-cap="school look"><div class="ph-fill"><img src="assets/chaei/chaei-04.jpg" alt="chaei" loading="lazy"></div></div>
@@ -1482,7 +1482,7 @@
     11:{ date:'с 24 марта по 14 апреля 2026', title:'teach me how',
       text:'24 марта 2026 года на канале it\'s live, в коллаборации с проектом «뮤니버스», стартовало реалити teach me how: документация процесса формирования дебютного состава.\n\nВ первом эпизоде показаны четыре трейни под лидерством Чхве Джихён: Хан Чонён, Ли Дагён, Пань Люинь. По ходу эпизода к ним присоединилась суин.\n\nИндивидуальные оценки трейни: Чонён (тембр голоса как результат работы), Дагён (узнаваемый образ), Люинь (глобальный потенциал). Хореограф отметил несовпадение деталей движений и малую амплитуду. Компания на старте заявила: состав не определён.\n\nТизер аккаунт группы в соцсетях: heart5woman, задолго до объявления официального названия.\n\n14 апреля 2026 года объявлено сценическое имя суин: чэи (채이).' },
     12:{ date:'28 мая 2026', title:'heart of woman',
-      text:'28 мая 2026 года, 18:00 по корейскому времени, heart of woman дебютировали с полноформатным альбомом heart byte: legacy. Титульный трек: «나를 잃지 않는 방법 (lost in proof)».\n\nПервые сцены: m countdown (mnet), music bank (kbs 2tv), позже show! music core (mbc) и it\'s live. Участницы пели вживую полностью, без исключений; мейн вокалистка Айне брала верхние ноты без подстраховки.\n\nВизуальная концепция: аналоговая эстетика, кассетные и cd плееры, общее y2k настроение. Тексты песен: преимущественно английский с заметным корейским.\n\nИюнь 2026 года: 29 место в рейтинге репутации бренда среди гёрл групп.' }
+      text:'28 мая 2026 года, 18:00 по корейскому времени, heart of woman дебютировали с полноформатным альбомом heart byte: legacy. Титульный трек: «나를 잃지 않는 방법 (lost in proof)».\n\nПервые сцены: m countdown (mnet), music bank (kbs 2tv), позже show! music core (mbc) и it\'s live. Участницы пели вживую полностью, без исключений; мейн вокалистка Айне брала верхние ноты без подстраховки.\n\nИюнь 2026 года: 29 место в рейтинге репутации бренда среди гёрл групп.' }
   };
   const eraModal = document.getElementById('eraModal');
   const eraModalDate = document.getElementById('eraModalDate');
@@ -1535,6 +1535,7 @@
     const img = ph.querySelector('img');
     photoModalImg.src = img.src;
     photoModalCap.textContent = ph.dataset.cap || '';
+    photoModalCap.style.display = ph.dataset.cap ? '' : 'none';
     photoModalCounter.textContent = (photoIndex + 1) + ' / ' + photoSet.length;
   }
   function openPhotoModal(ph){
