@@ -28,7 +28,7 @@
     --glass-border:rgba(255,255,255,0.7);
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth; overflow-x:hidden;}
   body{
     background:var(--page);
     color:var(--ink);
@@ -41,9 +41,16 @@
   ::selection{ background:var(--rose); color:#fff;}
 
   /* ambient blurred shapes sitting behind glass panels — this is what the
-     glass is actually blurring, otherwise backdrop-filter has nothing to do */
+     glass is actually blurring, otherwise backdrop-filter has nothing to do.
+     wrapped in a fixed, viewport-clipped layer so the oversized blobs can't
+     register as document overflow (fixed-position children can otherwise
+     escape a body{overflow-x:hidden} clip and cause phantom horizontal
+     scroll on mobile browsers). */
+  .ambient-layer{
+    position:fixed; inset:0; overflow:hidden; z-index:0; pointer-events:none;
+  }
   .ambient{
-    position:fixed; z-index:0; border-radius:50%;
+    position:absolute; border-radius:50%;
     filter:blur(60px); pointer-events:none;
   }
   .ambient-1{ top:-10%; right:-8%; width:38vw; height:38vw; background:radial-gradient(circle, rgba(189,111,137,0.26), transparent 70%); }
@@ -343,6 +350,7 @@
   .track{
     display:flex; gap:20px;
     overflow-x:auto;
+    overscroll-behavior-x:contain;
     scroll-snap-type: x proximity;
     padding:6px 6px 26px;
     cursor:grab;
@@ -468,6 +476,7 @@
   .members-row{
     display:flex; gap:8px;
     overflow-x:auto;
+    overscroll-behavior-x:contain;
     padding:4px 4px 8px;
     scrollbar-width:none;
   }
@@ -844,9 +853,11 @@
 </head>
 <body>
 
-<div class="ambient ambient-1"></div>
-<div class="ambient ambient-2"></div>
-<div class="ambient ambient-3"></div>
+<div class="ambient-layer">
+  <div class="ambient ambient-1"></div>
+  <div class="ambient ambient-2"></div>
+  <div class="ambient ambient-3"></div>
+</div>
 <div class="grain"></div>
 <div class="progress" id="progress"></div>
 
